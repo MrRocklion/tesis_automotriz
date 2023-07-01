@@ -1,0 +1,189 @@
+ {
+    "sistemas": [
+        "MOTOR",
+        "SISTEMA DE DIRECCIÓN",
+        "SISTEMA DE TRANSMISIÓN",
+        "SISTEMA DE FRENOS - SUSPENSIÓN",
+        "SISTEMA ELÉCTRICO",
+        "CARROCERÍA"
+    ],
+    "tipo": [
+        "CAMBIO",
+        "INSPECCIÓN",
+        "REALIZAR",
+        "LUBRICAR",
+        "INSPECCIÓN Y CAMBIO",
+        "INSPECCIÓN Y LUBRICACIÓN"
+    ],
+    "marca": [
+        {
+            "nombre": "CHEVROLET 2019-2023",
+            "marca": "CHEVROLET",
+            "año": "2019-2023",
+            "kilometros": []
+        },
+        {
+            "nombre": "CHEVROLET 2013-2018",
+            "marca": "CHEVROLET",
+            "año": "2013-2018",
+            "kilometros": []
+        },
+        {
+            "nombre": "CHEVROLET 2006-2012",
+            "marca": "CHEVROLET",
+            "año": "2006-2012",
+            "kilometros": []
+        },
+        {
+            "nombre": "HYUNDAY 2019-2023",
+            "marca": "HYUNDAY",
+            "año": "2019-2023",
+            "kilometros": []
+        },
+        {
+            "nombre": "HYUNDAY 2013-2018",
+            "marca": "HYUNDAY",
+            "año": "2013-2018",
+            "kilometros": []
+        },
+        {
+            "nombre": "HYUNDAY 2006-2012",
+            "marca": "HYUNDAY",
+            "año": "2006-2012",
+            "kilometros": []
+        },
+        {
+            "nombre": "KIA 2019-2023",
+            "marca": "KIA",
+            "año": "2019-2023",
+            "kilometros": []
+        },
+        {
+            "nombre": "KIA 2013-2018",
+            "marca": "KIA",
+            "año": "2013-2018",
+            "kilometros": []
+        },
+        {
+            "nombre": "KIA 2006-2012",
+            "marca": "KIA",
+            "año": "2006-2012",
+            "kilometros": []
+        },
+        {
+            "nombre": "NISSAN 2019-2023",
+            "marca": "NISSAN",
+            "año": "2019-2023",
+            "kilometros": []
+        },
+        {
+            "nombre": "NISSAN 2013-2018",
+            "marca": "NISSAN",
+            "año": "2013-2018",
+            "kilometros": []
+        },
+        {
+            "nombre": "NISSAN 2006-2012",
+            "marca": "NISSAN",
+            "año": "2006-2012",
+            "kilometros": []
+        }
+    ],
+    "actividades": [
+        {
+            "codigo": 1,
+            "nombre": "Cambio de aceite y filtro de motor"
+        },
+        {
+            "codigo": 2,
+            "nombre": "Filtro de aire"
+        },
+        {
+            "codigo": 3,
+            "nombre": "Cambio del filtro de combustible"
+        },
+        {
+            "codigo": 4,
+            "nombre": "Cambio del termostato"
+        },
+        {
+            "codigo": 5,
+            "nombre": "banda de accesorios"
+        },
+        {
+            "codigo": 6,
+            "nombre": "Cambio empaque de la tapa valvulas"
+        },
+        {
+            "codigo": 7,
+            "nombre": "Limpieza del cuerpo de aceleracion"
+        },
+        {
+            "codigo": 8,
+            "nombre": "Limpieza del tanque de combustible"
+        },
+        {
+            "codigo": 9,
+            "nombre": "Compresion del motor"
+        },
+        {
+            "codigo": 10,
+            "nombre": "Ajuste  del juego de valvulas"
+        },
+        {
+            "codigo": 11,
+            "nombre": "Sistema de escape"
+        },
+        {
+            "codigo": 12,
+            "nombre": "Cañerias del sistema de inyeccion"
+        },
+        {
+            "codigo": 13,
+            "nombre": "Sistema de entrada de aire"
+        },
+        {
+            "codigo": 14,
+            "nombre": "Nivel y fugas de liquido hiraulico"
+        },
+        {
+            "codigo": 15,
+            "nombre": "Líquido de dirección hidráulica"
+        },
+        {
+            "codigo": 16,
+            "nombre": "Terminales, rotulas, guardapolvos"
+        },
+        {
+            "codigo": 17,
+            "nombre": "Cambio de aceite"
+        },
+        {
+            "codigo": 18,
+            "nombre": "Rodamientos, Puntas de ejes"
+        },
+        {
+            "codigo": 19,
+            "nombre": "Fugas de líquido en el sistema"
+        },
+        {
+            "codigo": 21,
+            "nombre": "Juego en el pedal de embrague"
+        },
+        {
+            "codigo": 21,
+            "nombre": "Liquido del embrague"
+        }
+    ],
+    "datos": [
+        {
+            "id": 0,
+            "sistema": "MOTOR",
+            "actividad": "Cambio de aceite y filtro de motor",
+            "tipo": "cambio",
+            "marca": "KIA",
+            "año": "2019-2023",
+            "km": 5
+        }
+    ]
+}

@@ -12,6 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import TableRow from '@mui/material/TableRow';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 export default function ParametrosView(){
 
@@ -19,6 +20,7 @@ export default function ParametrosView(){
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [modalCrear,setModalCrear]  = useState(false);
+    const [modalParametro,setModalParametro] = useState(false);
   
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
@@ -33,8 +35,11 @@ export default function ParametrosView(){
         <>
             <Container maxWidth="md" style={{paddingTop:20}}>
                 <Grid container spacing={2}>
-                <Grid item xs={12} >
-                <Button variant="contained" onClick={()=>{setModalCrear(true)}}>Agregar Parametro</Button>
+                <Grid item xs={3} >
+                <Button variant="contained" onClick={()=>{setModalParametro(true)}}>Agregar Parametro</Button>
+                </Grid>
+                <Grid item xs={3} >
+                <Button variant="contained" onClick={()=>{setModalCrear(true)}}>Agregar Plan Mtto</Button>
                 </Grid>
                     <Grid item xs={12} >
                     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -115,11 +120,44 @@ export default function ParametrosView(){
                     </Grid>
                 </Grid>
                 
+                <Modal isOpen={modalParametro} >
+                    <ModalHeader>
+                        <div>
+                            <h6>
+                                Crear Parametro de Vehiculo
+                            </h6>
+                        </div>
+                    </ModalHeader>
+                    <ModalBody>
+                        <Grid container spacing={1}>
+                            <Grid item xs={12}>
+                            <TextField id="outlined-basic" fullWidth label="Marca Del Vehiculo" variant="outlined" />
+                            </Grid>
+                            <Grid item xs={6}>
+                            <TextField id="outlined-basic" label="Año Inicio"  type="number" variant="outlined" />
+                            </Grid>
+                            <Grid item xs={6}>
+                            <TextField id="outlined-basic" label="Año Final" type="number" variant="outlined" />
+                            </Grid>
+                        </Grid>
+
+
+                    </ModalBody>
+                    <ModalFooter >
+                        <Button variant="contained" color='anaranjado1'  sx={{ marginLeft: 1 }}>
+                            Aplicar
+                        </Button>
+                        <Button variant="contained" color='rojo' onClick={()=>{setModalParametro(false)}} sx={{ marginLeft: 1 }}>
+                            cancelar
+                        </Button>
+                    </ModalFooter>
+                </Modal>
+
                 <Modal isOpen={modalCrear} >
                     <ModalHeader>
                         <div>
                             <h1>
-                                Informacion
+                                Crear Plan
                             </h1>
                         </div>
                     </ModalHeader>
@@ -131,37 +169,6 @@ export default function ParametrosView(){
                                    
                                 </div>
                             </Grid>
-                            <Grid item xs={6}>
-                                <div>
-                                    <strong><h5>Canton</h5></strong>
-                          
-                                </div>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <div>
-                                    <strong><h5>Latitud</h5></strong>
-                              
-                                </div>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <div>
-                                    <strong><h5>longitud</h5></strong>
-                    
-                                </div>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <div>
-                                    <strong><h5>Ip</h5></strong>
-                   
-                                </div>
-                            </Grid>
-                            <Grid item xs={6}>
-
-                                <div>
-                                    <strong><h5>Mac</h5></strong>
-                  
-                                </div>
-                            </Grid>
                         </Grid>
 
 
@@ -170,7 +177,7 @@ export default function ParametrosView(){
                         <Button variant="contained" color='anaranjado1'  sx={{ marginLeft: 1 }}>
                             Aplicar
                         </Button>
-                        <Button variant="contained" color='rojo'  sx={{ marginLeft: 1 }}>
+                        <Button variant="contained" color='rojo' onClick={()=>{setModalCrear(false)}} sx={{ marginLeft: 1 }}>
                             cancelar
                         </Button>
                     </ModalFooter>
