@@ -8,6 +8,7 @@
         "CARROCERÍA"
     ],
     "tipo": [
+        "NINGUNO",
         "CAMBIO",
         "INSPECCIÓN",
         "REALIZAR",
@@ -20,13 +21,13 @@
             "nombre": "CHEVROLET 2019-2023",
             "marca": "CHEVROLET",
             "año": "2019-2023",
-            "kilometros": []
+            "kilometros": [5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]
         },
         {
             "nombre": "CHEVROLET 2013-2018",
             "marca": "CHEVROLET",
             "año": "2013-2018",
-            "kilometros": []
+            "kilometros": [4.5,9,13.5,18,22.5,27,31.5,36,40.5,45,49.5]
         },
         {
             "nombre": "CHEVROLET 2006-2012",
@@ -171,8 +172,111 @@
             "nombre": "Juego en el pedal de embrague"
         },
         {
-            "codigo": 21,
+            "codigo": 22,
             "nombre": "Liquido del embrague"
+        },
+        {
+            "codigo": 23,
+            "nombre": "Fugas en las cañerias"
+        },
+        {
+            "codigo": 24,
+            "nombre": "Verificación del líquido de freno"
+        },        {
+            "codigo": 25,
+            "nombre": "Cambio del líquido de freno"
+        },        
+        {
+            "codigo": 26,
+            "nombre": "Ajuste del pedal de freno"
+        },        
+        {
+            "codigo": 27,
+            "nombre": "Revisión y regulación"
+        },        
+        {
+            "codigo": 28,
+            "nombre": "Líquido del embrague"
+        },        
+        {
+            "codigo": 29,
+            "nombre": "Alineación, rotación, y balanceo de neumáticos"
+        },        
+        {
+            "codigo": 30,
+            "nombre": "Revisión de fugas de aceites en los amortiguadores"
+        },        
+        {
+            "codigo": 31,
+            "nombre": "Inspección de muelles"
+        },        
+        {
+            "codigo": 32,
+            "nombre": "Holguras y daños"
+        },        
+        {
+            "codigo": 33,
+            "nombre": "Suspensión, tornillos y tuercas"
+        },        
+        {
+            "codigo": 34,
+            "nombre": "Luces y Bocina"
+        },        
+        {
+            "codigo": 35,
+            "nombre": "Alineación de luces"
+        },       
+        {
+            "codigo": 36,
+            "nombre": "Revisión de Fusibles"
+        },       
+        {
+            "codigo": 39,
+            "nombre": "Inspección de cableado"
+        },       
+        {
+            "codigo": 40,
+            "nombre": "Sistema de carga"
+        },       
+        {
+            "codigo": 41,
+            "nombre": "Bateria Nivel de líquido y densida"
+        },       
+        {
+            "codigo": 42,
+            "nombre": "Terminales de batería"
+        },       
+        {
+            "codigo": 43,
+            "nombre": "Limpiaparabrisas, rociador"
+        },       
+        {
+            "codigo": 44,
+            "nombre": "Nivel de líquido del limpiaparabrisas"
+        },       
+        {
+            "codigo": 45,
+            "nombre": "Retrovisores"
+        }, 
+        {
+            "codigo": 46,
+            "nombre": "Pintura exterior"
+        },
+        {
+            "codigo": 47,
+            "nombre": "Puertas / elevadores de vidrios"
+        },
+        {
+            "codigo": 48,
+            "nombre": "Revisión del tapizado interior"
+        },
+        {
+            "codigo": 49,
+            "nombre": "Inspección del tablero de control"
+        },
+        {
+            "codigo": 50,
+            "nombre": "Revisión de los asientos"
         }
     ],
     "datos": [
