@@ -1,293 +1,242 @@
  {
-    "sistemas": [
-        "MOTOR",
-        "SISTEMA DE DIRECCIÓN",
-        "SISTEMA DE TRANSMISIÓN",
-        "SISTEMA DE FRENOS - SUSPENSIÓN",
-        "SISTEMA ELÉCTRICO",
-        "CARROCERÍA"
-    ],
-    "tipo": [
-        "NINGUNO",
-        "CAMBIO",
-        "INSPECCIÓN",
-        "REALIZAR",
-        "LUBRICAR",
-        "INSPECCIÓN Y CAMBIO",
-        "INSPECCIÓN Y LUBRICACIÓN"
-    ],
-    "marca": [
-        {
-            "nombre": "CHEVROLET 2019-2023",
-            "marca": "CHEVROLET",
-            "año": "2019-2023",
-            "kilometros": [5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100]
-        },
-        {
-            "nombre": "CHEVROLET 2013-2018",
-            "marca": "CHEVROLET",
-            "año": "2013-2018",
-            "kilometros": [4.5,9,13.5,18,22.5,27,31.5,36,40.5,45,49.5]
-        },
-        {
-            "nombre": "CHEVROLET 2006-2012",
-            "marca": "CHEVROLET",
-            "año": "2006-2012",
-            "kilometros": []
-        },
-        {
-            "nombre": "HYUNDAY 2019-2023",
-            "marca": "HYUNDAY",
-            "año": "2019-2023",
-            "kilometros": []
-        },
-        {
-            "nombre": "HYUNDAY 2013-2018",
-            "marca": "HYUNDAY",
-            "año": "2013-2018",
-            "kilometros": []
-        },
-        {
-            "nombre": "HYUNDAY 2006-2012",
-            "marca": "HYUNDAY",
-            "año": "2006-2012",
-            "kilometros": []
-        },
-        {
-            "nombre": "KIA 2019-2023",
-            "marca": "KIA",
-            "año": "2019-2023",
-            "kilometros": []
-        },
-        {
-            "nombre": "KIA 2013-2018",
-            "marca": "KIA",
-            "año": "2013-2018",
-            "kilometros": []
-        },
-        {
-            "nombre": "KIA 2006-2012",
-            "marca": "KIA",
-            "año": "2006-2012",
-            "kilometros": []
-        },
-        {
-            "nombre": "NISSAN 2019-2023",
-            "marca": "NISSAN",
-            "año": "2019-2023",
-            "kilometros": []
-        },
-        {
-            "nombre": "NISSAN 2013-2018",
-            "marca": "NISSAN",
-            "año": "2013-2018",
-            "kilometros": []
-        },
-        {
-            "nombre": "NISSAN 2006-2012",
-            "marca": "NISSAN",
-            "año": "2006-2012",
-            "kilometros": []
-        }
-    ],
+
     "actividades": [
         {
             "codigo": 1,
-            "nombre": "Cambio de aceite y filtro de motor"
+            "nombre": "Cambio de aceite y filtro de motor",
+            "sistema":"MOTOR"
         },
         {
             "codigo": 2,
-            "nombre": "Filtro de aire"
+            "nombre": "Filtro de aire",
+            "sistema":"MOTOR"
         },
         {
             "codigo": 3,
-            "nombre": "Cambio del filtro de combustible"
+            "nombre": "Cambio del filtro de combustible",
+            "sistema":"MOTOR"
         },
         {
             "codigo": 4,
-            "nombre": "Cambio del termostato"
+            "nombre": "Cambio del termostato",
+            "sistema":"MOTOR"
         },
         {
             "codigo": 5,
-            "nombre": "banda de accesorios"
+            "nombre": "banda de accesorios",
+            "sistema":"MOTOR"
         },
         {
             "codigo": 6,
-            "nombre": "Cambio empaque de la tapa valvulas"
+            "nombre": "Cambio empaque de la tapa valvulas",
+            "sistema":"MOTOR"
         },
         {
             "codigo": 7,
-            "nombre": "Limpieza del cuerpo de aceleracion"
+            "nombre": "Limpieza del cuerpo de aceleracion",
+            "sistema":"MOTOR"
         },
         {
             "codigo": 8,
-            "nombre": "Limpieza del tanque de combustible"
+            "nombre": "Limpieza del tanque de combustible",
+            "sistema":"MOTOR"
         },
         {
             "codigo": 9,
-            "nombre": "Compresion del motor"
+            "nombre": "Compresion del motor",
+            "sistema":"MOTOR"
         },
         {
             "codigo": 10,
-            "nombre": "Ajuste  del juego de valvulas"
+            "nombre": "Ajuste  del juego de valvulas",
+            "sistema":"MOTOR"
         },
         {
             "codigo": 11,
-            "nombre": "Sistema de escape"
+            "nombre": "Sistema de escape",
+            "sistema":"MOTOR"
         },
         {
             "codigo": 12,
-            "nombre": "Cañerias del sistema de inyeccion"
+            "nombre": "Cañerias del sistema de inyeccion",
+            "sistema":"MOTOR"
         },
         {
             "codigo": 13,
-            "nombre": "Sistema de entrada de aire"
+            "nombre": "Sistema de entrada de aire",
+            "sistema":"MOTOR"
         },
         {
             "codigo": 14,
-            "nombre": "Nivel y fugas de liquido hiraulico"
+            "nombre": "Nivel y fugas de liquido hiraulico",
+            "sistema":"SISTEMA DE DIRECCIÓN"
         },
         {
             "codigo": 15,
-            "nombre": "Líquido de dirección hidráulica"
+            "nombre": "Líquido de dirección hidráulica",
+            "sistema":"SISTEMA DE DIRECCIÓN"
         },
         {
             "codigo": 16,
-            "nombre": "Terminales, rotulas, guardapolvos"
+            "nombre": "Terminales, rotulas, guardapolvos",
+            "sistema":"SISTEMA DE DIRECCIÓN"
         },
         {
             "codigo": 17,
-            "nombre": "Cambio de aceite"
+            "nombre": "Cambio de aceite",
+            "sistema":"SISTEMA DE TRANSMISIÓN"
         },
         {
             "codigo": 18,
-            "nombre": "Rodamientos, Puntas de ejes"
+            "nombre": "Rodamientos, Puntas de ejes",
+            "sistema":"SISTEMA DE TRANSMISIÓN"
         },
         {
             "codigo": 19,
-            "nombre": "Fugas de líquido en el sistema"
+            "nombre": "Fugas de líquido en el sistema",
+            "sistema":"SISTEMA DE TRANSMISIÓN"
         },
         {
             "codigo": 21,
-            "nombre": "Juego en el pedal de embrague"
+            "nombre": "Juego en el pedal de embrague",
+            "sistema":"SISTEMA DE TRANSMISIÓN"
         },
         {
             "codigo": 22,
-            "nombre": "Liquido del embrague"
+            "nombre": "Liquido del embrague",
+            "sistema":"SISTEMA DE TRANSMISIÓN"
         },
         {
             "codigo": 23,
-            "nombre": "Fugas en las cañerias"
+            "nombre": "Fugas en las cañerias",
+            "sistema":"SISTEMA DE FRENOS - SUSPENSIÓN"
         },
         {
             "codigo": 24,
-            "nombre": "Verificación del líquido de freno"
+            "nombre": "Verificación del líquido de freno",
+            "sistema":"SISTEMA DE FRENOS - SUSPENSIÓN"
         },        {
             "codigo": 25,
-            "nombre": "Cambio del líquido de freno"
+            "nombre": "Cambio del líquido de freno",
+            "sistema":"SISTEMA DE FRENOS - SUSPENSIÓN"
         },        
         {
             "codigo": 26,
-            "nombre": "Ajuste del pedal de freno"
+            "nombre": "Ajuste del pedal de freno",
+            "sistema":"SISTEMA DE FRENOS - SUSPENSIÓN"
         },        
         {
             "codigo": 27,
-            "nombre": "Revisión y regulación"
+            "nombre": "Revisión y regulación de pastillas, discos,tambores y zapatas",
+            "sistema":"SISTEMA DE FRENOS - SUSPENSIÓN"
         },        
         {
             "codigo": 28,
-            "nombre": "Líquido del embrague"
+            "nombre": "Líquido del embrague",
+            "sistema":"SISTEMA DE FRENOS - SUSPENSIÓN"
         },        
         {
             "codigo": 29,
-            "nombre": "Alineación, rotación, y balanceo de neumáticos"
+            "nombre": "Alineación, rotación, y balanceo de neumáticos",
+            "sistema":"SISTEMA DE FRENOS - SUSPENSIÓN"
         },        
         {
             "codigo": 30,
-            "nombre": "Revisión de fugas de aceites en los amortiguadores"
+            "nombre": "Revisión de fugas de aceites en los amortiguadores",
+            "sistema":"SISTEMA DE FRENOS - SUSPENSIÓN"
         },        
         {
             "codigo": 31,
-            "nombre": "Inspección de muelles"
+            "nombre": "Inspección de muelles",
+            "sistema":"SISTEMA DE FRENOS - SUSPENSIÓN"
         },        
         {
             "codigo": 32,
-            "nombre": "Holguras y daños"
+            "nombre": "Holguras y daños",
+            "sistema":"SISTEMA DE FRENOS - SUSPENSIÓN"
         },        
         {
             "codigo": 33,
-            "nombre": "Suspensión, tornillos y tuercas"
+            "nombre": "Suspensión, tornillos y tuercas",
+            "sistema":"SISTEMA DE FRENOS - SUSPENSIÓN"
         },        
         {
             "codigo": 34,
-            "nombre": "Luces y Bocina"
+            "nombre": "Luces y Bocina",
+            "sistema":"SISTEMA ELÉCTRICO"
         },        
         {
             "codigo": 35,
-            "nombre": "Alineación de luces"
+            "nombre": "Alineación de luces",
+            "sistema":"SISTEMA ELÉCTRICO"
+            
         },       
         {
             "codigo": 36,
-            "nombre": "Revisión de Fusibles"
+            "nombre": "Revisión de Fusibles",
+            "sistema":"SISTEMA ELÉCTRICO"
         },       
         {
             "codigo": 39,
-            "nombre": "Inspección de cableado"
+            "nombre": "Inspección de cableado",
+            "sistema":"SISTEMA ELÉCTRICO"
         },       
         {
             "codigo": 40,
-            "nombre": "Sistema de carga"
+            "nombre": "Sistema de carga",
+            "sistema":"SISTEMA ELÉCTRICO"
         },       
         {
             "codigo": 41,
-            "nombre": "Bateria Nivel de líquido y densida"
+            "nombre": "Bateria Nivel de líquido y densida",
+            "sistema":"SISTEMA ELÉCTRICO"
         },       
         {
             "codigo": 42,
-            "nombre": "Terminales de batería"
+            "nombre": "Terminales de batería",
+            "sistema":"SISTEMA ELÉCTRICO"
         },       
         {
             "codigo": 43,
-            "nombre": "Limpiaparabrisas, rociador"
+            "nombre": "Limpiaparabrisas, rociador",
+            "sistema":"SISTEMA ELÉCTRICO"
         },       
         {
             "codigo": 44,
-            "nombre": "Nivel de líquido del limpiaparabrisas"
+            "nombre": "Nivel de líquido del limpiaparabrisas",
+            "sistema":"SISTEMA ELÉCTRICO"
         },       
         {
             "codigo": 45,
-            "nombre": "Retrovisores"
+            "nombre": "Retrovisores",
+            "sistema":"CARROCERÍA"
         }, 
         {
             "codigo": 46,
-            "nombre": "Pintura exterior"
+            "nombre": "Pintura exterior",
+            "sistema":"CARROCERÍA"
         },
         {
             "codigo": 47,
-            "nombre": "Puertas / elevadores de vidrios"
+            "nombre": "Puertas / elevadores de vidrios",
+            "sistema":"CARROCERÍA"
         },
         {
             "codigo": 48,
-            "nombre": "Revisión del tapizado interior"
+            "nombre": "Revisión del tapizado interior",
+            "sistema":"CARROCERÍA"
         },
         {
             "codigo": 49,
-            "nombre": "Inspección del tablero de control"
+            "nombre": "Inspección del tablero de control",
+            "sistema":"CARROCERÍA"
         },
         {
             "codigo": 50,
-            "nombre": "Revisión de los asientos"
-        }
-    ],
-    "datos": [
-        {
-            "id": 0,
-            "sistema": "MOTOR",
-            "actividad": "Cambio de aceite y filtro de motor",
-            "tipo": "cambio",
-            "marca": "KIA",
-            "año": "2019-2023",
-            "km": 5
+            "nombre": "Revisión de los asientos",
+            "sistema":"CARROCERÍA"
         }
     ]
+   
+
 }
