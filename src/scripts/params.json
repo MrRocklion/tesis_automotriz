@@ -250,6 +250,11 @@
             "codigo": 53,
             "nombre": "Banda de Distribución",
             "sistema":"MOTOR"
+        },
+        {
+            "codigo": 54,
+            "nombre": "Inspección del estado general Cabina",
+            "sistema":"CARROCERÍA"
         }
         
     ]
