@@ -152,7 +152,7 @@
         },        
         {
             "codigo": 32,
-            "nombre": "Holguras y daños",
+            "nombre": "Holguras y daños en rotulas,barra estabilizadora y platos",
             "sistema":"SISTEMA DE FRENOS - SUSPENSIÓN"
         },        
         {
@@ -246,6 +246,7 @@
             "nombre": "Limpieza del sistema de inyección",
             "sistema":"MOTOR"
         }
+        
     ]
    
 
