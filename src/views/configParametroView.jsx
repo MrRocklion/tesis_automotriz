@@ -21,13 +21,10 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { styled } from '@mui/material/styles';
-import { doc, setDoc, collection, query, onSnapshot ,updateDoc} from "firebase/firestore";
+import { doc, onSnapshot ,updateDoc} from "firebase/firestore";
 import Typography from '@mui/material/Typography';
 import { v4 as uuidv4 } from 'uuid';
 import { db } from "../firebase/firebase-config";
-import EditIcon from '@mui/icons-material/Edit';
-import { useNavigate } from 'react-router-dom';
-import AssignmentIcon from '@mui/icons-material/Assignment';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useParams } from 'react-router-dom';
 const StyledTableCell = styled(TableCell)(({ theme }) => ({

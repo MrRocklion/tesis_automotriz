@@ -83,7 +83,7 @@
         },
         {
             "codigo": 17,
-            "nombre": "Cambio de aceite",
+            "nombre": "Cambio de aceite en caja de cambios",
             "sistema":"SISTEMA DE TRANSMISIÓN"
         },
         {
@@ -235,6 +235,16 @@
             "codigo": 50,
             "nombre": "Revisión de los asientos",
             "sistema":"CARROCERÍA"
+        },
+        {
+            "codigo": 51,
+            "nombre": "Bujías de encendido",
+            "sistema":"MOTOR"
+        },
+        {
+            "codigo": 52,
+            "nombre": "Limpieza del sistema de inyección",
+            "sistema":"MOTOR"
         }
     ]
    
