@@ -35,7 +35,9 @@ const generarPdf = (props_pdf) => {
         body: props_pdf.data,
           columns: [
             { header: 'Actividad', dataKey: 'nombre' },
-            { header: 'km', dataKey: 'asia' },
+            { header: 'Sistema', dataKey: 'sistema' },
+            { header: 'Tipo', dataKey: 'tipo' },
+            { header: 'km', dataKey: 'km' },
           ],
     })
       

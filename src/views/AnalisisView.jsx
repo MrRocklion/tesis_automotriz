@@ -103,13 +103,13 @@ export default function AnalisisView() {
   }
 
   const crearPdf =()=>{
-    if(planificacion.length > 2){
+
       let parametros = {
         data: planificacion,
         fecha: "19-07-1999"
       }
-      generarPdf(parametros)
-    }
+      //generarPdf(parametros)
+    
   }
 
   useEffect(() => {
@@ -186,7 +186,7 @@ export default function AnalisisView() {
                   <Button
                     variant="outlined"
                     className="boton-modal2"
-                    onClick={generarPdf}
+                    onClick={crearPdf}
                   >
                     GENERAR PDF
                   </Button>
