@@ -2,87 +2,124 @@ import React, { useState, useEffect } from "react";
 import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SendIcon from '@mui/icons-material/Send';
-import Stack from '@mui/material/Stack';
 import '../css/Analisis.css';
+import Container from '@mui/material/Container';
 import logo from '../components/imagenes/carros.PNG';
 import { db } from "../firebase/firebase-config";
 import { v4 as uuidv4 } from 'uuid';
 import Grid from "@mui/material/Grid";
 import Autocomplete from '@mui/material/Autocomplete';
-import { collection, setDoc, query, doc, deleteDoc, updateDoc,getDocs,getDoc } from "firebase/firestore";
+import { collection, setDoc, query, doc, deleteDoc, updateDoc, getDocs, getDoc, where } from "firebase/firestore";
 import Typography from '@mui/material/Typography';
-import { useParams } from "react-router-dom";
 import Swal from 'sweetalert2';
-import TextareaAutosize from '@mui/material/TextareaAutosize';
+import { styled } from '@mui/material/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import { generarPdf } from "../scripts/pdfReporte";
 
-export default function AnalisisView(){
-    const [tipoAuto, setTipoAuto] = useState([]);
-    const [tipoAños, setTipoAños] = useState([]);
-    const [años, setAños] = useState([]);
-    const [tipo, setTipo] = useState();
-    const [descripcion,setDescripcion] = useState('');
 
-    const getData = async () => {
-		const reference = doc(db, "informacion", "documentacion");
-		const docSnap = await getDoc(reference);
-		let parametros = {}
-		if (docSnap.exists()) {
-			parametros = docSnap.data();
-			setTipoAuto(parametros.marca)
-            setTipoAños(parametros.año)
-		} else {
-			console.log("No such document!");
-		}
-	}
 
-    const Calcular = async () => {
-		var valorNuevo = {
-			auto: tipo,
-			año: años,
-            kilometraje:descripcion,
-			id: uuidv4(),
-		}
-		console.log(valorNuevo)
-
-        let timerInterval
-Swal.fire({
-  title: 'Calculando Mantenimiento!',
-  html: 'Esperar <b></b> milliseconds.',
-  timer: 700,
-  timerProgressBar: true,
-  didOpen: () => {
-    Swal.showLoading()
-    const b = Swal.getHtmlContainer().querySelector('b')
-    timerInterval = setInterval(() => {
-      b.textContent = Swal.getTimerLeft()
-    }, 100)
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
   },
-  willClose: () => {
-    clearInterval(timerInterval)
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
+
+export default function AnalisisView() {
+  const [tipoAuto, setTipoAuto] = useState([]);
+  const [tipoAños, setTipoAños] = useState([]);
+  const [años, setAños] = useState([]);
+  const [tipo, setTipo] = useState();
+  const [descripcion, setDescripcion] = useState('');
+  const [planificacion,setPlanificacion]  = useState([{}]);
+  const [kilometros,setKilometros] = useState([]);
+  const [kmTarget,setKmTarget]= useState(0);
+
+  const getData = async () => {
+    const reference = doc(db, "informacion", "documentacion");
+    const docSnap = await getDoc(reference);
+    let parametros = {}
+    if (docSnap.exists()) {
+      parametros = docSnap.data();
+      setTipoAuto(parametros.marca)
+      setTipoAños(parametros.año)
+    } else {
+      console.log("No such document!");
+    }
   }
-}).then((result) => {
-  /* Read more about handling dismissals below */
-  if (result.dismiss === Swal.DismissReason.timer) {
-    Swal.fire(
-        'MANTENIMIENTO PROGRAMADO',
-        '',
-        'success'
-    )
+  const encontrarIndiceUltimoMenor =(arr, numero) =>{
+    let valor = null; // Valor inicial del último número menor
+
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] < numero) {
+      valor = arr[i]; // Actualizar el valor cuando se encuentra un número menor
+    }
   }
-})
 
-		console.log(valorNuevo)
-	}
+  return valor;
+  }
+  const Calcular = async () => {
+  
+    let name_target = `${tipo} ${años}`
+    console.log(name_target)
+    const q = query(collection(db, "parametros"), where("nombre", "==", name_target));
+    let data = []
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      data = doc.data()
+    });
+    console.log(data)
+    try {
+      let aux_km = data.kilometros.map(item =>(item * 1000))
+   
+      let valor = encontrarIndiceUltimoMenor(aux_km,parseInt(kilometros))/1000
+      let datos_man = data.mantenimientos.filter(item=> item.km === valor)
+      setPlanificacion(datos_man)
+      console.log(datos_man);
+      setKmTarget(valor)
 
-    useEffect(() => {
-        getData();
-      }, [])
+    } catch (error) {
+      
+    }
+  }
+
+  const crearPdf =()=>{
+    if(planificacion.length > 2){
+      let parametros = {
+        data: planificacion,
+        fecha: "19-07-1999"
+      }
+      generarPdf(parametros)
+    }
+  }
+
+  useEffect(() => {
+    getData();
+  }, [])
 
 
-    return(<>
-       <Grid container spacing={4} >
+  return (<>
+    <Container maxWidth="lg">
+      <Grid container spacing={4} >
         <Grid item xs={12}>
           <Typography component="div" variant="h4" className="princi3" >
             INGRESO VEHICULOS
@@ -91,95 +128,130 @@ Swal.fire({
       </Grid>
 
       <div className="container">
-                <div className="column">
+        <div className="column">
 
-                    <div className="col-sm-12" >
-                        <Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 12, sm: 8, md: 12 }}>
+          <div className="col-sm-12" >
+            <Grid container  spacing={4}>
 
-                            <Grid item xs={4} >
-                                <div className="panelp2" spacing={4}>
-                                    <Typography component="div" variant="h8" className="titulou" >
-                                        <b>Datos Vehículo</b>
-                                    </Typography>
-                                  
+              <Grid item md={4} xs={12} >
+                <div className="panelp2">
+                <Grid container spacing={1}  >
+                  
+                <Grid item xs={12} >
+                    <Typography component="div" variant="h8" className="titulou" >
+                      <b>Datos Vehículo</b>
+                    </Typography>
+
+                </Grid>
+                <Grid item xs={12}  >
                 <Autocomplete
-								disableClearable
-								id="combo-box-demo"
-								options={tipoAuto}
-								onChange={(event, newvalue) => setTipo(newvalue)}
-								renderInput={(params) => <TextField {...params} fullWidth label="MARCA" type="text" />}
-							/>
-                
-                    
+                    disableClearable
+                    id="combo-box-demo"
+                    options={tipoAuto}
+                    onChange={(event, newvalue) => setTipo(newvalue)}
+                    renderInput={(params) => <TextField {...params} fullWidth label="MARCA" type="text" />}
+                  />
+                </Grid>
+                <Grid item xs={12} >
                 <Autocomplete
-								disableClearable
-								id="combo-box-demo"
-								options={tipoAños}
-								onChange={(event, newvalue) => setAños(newvalue)}
-								renderInput={(params) => <TextField {...params} fullWidth label="AÑOS" type="text" />}
-							/>
-                
-                      
-                        <TextareaAutosize
-                          style={{textTransform:"uppercase"}} 
-                          aria-label="minimum height"
-                          value={descripcion}
-                          minRows={1}
-                          placeholder="Kilometraje"
-                          className="text-area-encargado"
-                          onChange={(e) => setDescripcion(e.target.value)} 
-                        />
-                
-                    
-                      <Button
-						variant="outlined"
-						className="boton-modal2"
-						onClick={() => Calcular()}
-					>
-						PROGRAMAR MANTENIMIENTO
-					</Button>
-
-                    {/* <img src={logo}/> */}
-                    
-                                </div>
-                              
-                            </Grid>
-
-                            <Grid item xs={8}>
-                                <div className="panelp2" style={{ backgroundImage: `url(${logo})` }}>
-
-                                    <Grid container spacing={3}>
-                                        <Grid item xs={12} >
-                                            <Typography component="div" variant="h8" className="titulou" >
-                                                <b>Mantenimiento Programado</b>
-                                            </Typography>
-
-                                            {/* <img
-                                                className="imagen-usuarios w-40"
-                                                src={urlObject}
-                                                defaultValue={imagen1}
-                                                alt="user profile"
-                                            />
-                                            <input className="form-control " onChange={buscarImagen} type="file" id="formFile" /> */}
-
-                                        </Grid>
-                                       
-                                      
-                                      
-                                      
-                                        <Grid item xs={12}>
-                   
-                                        </Grid>
-                                    </Grid>
-                                </div>
-                            </Grid>
-                        </Grid>
-                    </div>
-
+                    disableClearable
+                    id="combo-box-demo"
+                    options={tipoAños}
+                    onChange={(event, newvalue) => setAños(newvalue)}
+                    renderInput={(params) => <TextField {...params} fullWidth label="RANGO" type="text" />}
+                  />
+                </Grid>
+                <Grid item xs={12} >
+                <TextField id="outlined-basic" fullWidth label="kilometros" value={kilometros} type="number" variant="outlined" onChange={(event,newValue)=>{setKilometros(event.target.value)}} />
+                          </Grid>
+                <Grid item xs={12} >
+                <Button
+                    variant="outlined"
+                    className="boton-modal2"
+                    onClick={() => Calcular()}
+                  >
+                    PROGRAMAR MANTENIMIENTO
+                  </Button>
+                </Grid>
+              </Grid>
+                </div>
+                <div className="panelp2">
+                <Grid container spacing={1} > 
+                    <Grid item xs={12} >
+                         <Typography component="div" variant="h8" className="titulou" >
+                           <b>Generar Reporte</b>
+                         </Typography>
+                     </Grid>
+                  <Grid item xs={12} >
+                  <Button
+                    variant="outlined"
+                    className="boton-modal2"
+                    onClick={generarPdf}
+                  >
+                    GENERAR PDF
+                  </Button>
+                  </Grid>
+                  </Grid>
                 </div>
 
+              </Grid>
+
+              <Grid item xs={12} md={8} >
+                <div className="panelp2" style={{ backgroundImage: `url(${logo})` }}>
+
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} >
+                      <Typography component="div" variant="h8" className="titulou" >
+                        <b>Mantenimiento Programado</b>
+                      </Typography>
+                      <Typography component="div" variant="h8" className="titulou" >
+                        <b>Kilometraje:</b> {kmTarget*1000}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12} >
+
+                      
+							<TableContainer sx={{overflowY:"scroll",height:450}} component={Paper}>
+								<Table  aria-label="customized table">
+            
+									<TableHead>
+
+									<TableRow>
+						
+										<StyledTableCell align="left">#</StyledTableCell>
+										<StyledTableCell align="left">Actividades</StyledTableCell>
+                    <StyledTableCell align="left">Sistema</StyledTableCell>
+                    <StyledTableCell align="left">Tipo</StyledTableCell>
+										
+									</TableRow>
+									</TableHead>
+									<TableBody>
+									{planificacion.map((row,index) => (
+										<StyledTableRow key={index}>
+										<StyledTableCell align="left">{index+1}</StyledTableCell>
+										<StyledTableCell align="left">{row.nombre}</StyledTableCell>
+                    <StyledTableCell align="left">{row.sistema}</StyledTableCell>
+                    <StyledTableCell align="left">{row.tipo}</StyledTableCell>
+										</StyledTableRow>
+									))}
+									</TableBody>
+								</Table>
+								</TableContainer>
+                    </Grid>
+                  </Grid>
+                </div>
+              </Grid>
+
+          
+            </Grid>
+          </div>
+
+        </div>
 
 
-            </div>
-    </>)
+
+      </div>
+    </Container>
+  </>
+  )
 }

@@ -49,7 +49,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   
 export default function ConfigParametroView() {
     let { id } = useParams();
-    const [sistema,setSistema] = useState("MOTOR");
     const [mantenimientos, setMantenimientos] = useState([{}])
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -168,7 +167,7 @@ export default function ConfigParametroView() {
     }
     useEffect(() => {
         readData();
-
+ // eslint-disable-next-line
     }, [])
 
     return (

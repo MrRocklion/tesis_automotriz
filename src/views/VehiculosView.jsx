@@ -2,13 +2,9 @@ import React, { useState, useEffect } from "react";
 import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SendIcon from '@mui/icons-material/Send';
-import Stack from '@mui/material/Stack';
 import '../css/Analisis.css';
 import { db } from "../firebase/firebase-config";
-import { collection, setDoc, query, doc, deleteDoc, updateDoc,getDocs,getDoc } from "firebase/firestore";
-import { v4 as uuidv4 } from 'uuid';
+import { collection, setDoc, doc,getDocs,getDoc } from "firebase/firestore";
 import Grid from "@mui/material/Grid";
 import Autocomplete from '@mui/material/Autocomplete';
 import Swal from 'sweetalert2';
@@ -17,12 +13,11 @@ import { useParams } from "react-router-dom";
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
+import Container from '@mui/material/Container';
 import {
-	Container,
 	Modal,
 	ModalHeader,
 	ModalBody,
-	FormGroup,
 	ModalFooter,
 } from "reactstrap";
 import Paper from '@mui/material/Paper';
@@ -263,14 +258,14 @@ export default function VehiculosView(){
                 <ModalFooter>					
                     <Button
 						variant="outlined"
-						className="boton-modal2"
+
 						onClick={() => IngresarEquipo()}
 					>
 						Insertar
 					</Button>
 					<Button
 						variant="contained"
-						className="boton-modal"
+	
 						onClick={() => cerrarModalInsertar()}
 					>
 						Cancelar

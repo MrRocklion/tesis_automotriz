@@ -30,7 +30,6 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 export default function ParametrosView() {
     const navigate = useNavigate();
     const [marca, setMarca] = useState("CHEVROLET");
-    const [marcas, setMarcas] = useState([data_json.marca]);
     const [planes, setPlanes] = useState([]);
     const [parametros,setParametros]  = useState([]);
     const [actividad, setActividad] = useState(data_json.actividades[0])
@@ -121,10 +120,7 @@ export default function ParametrosView() {
         kms.splice(index,1)
         setKiloemtros(kms)
     }
-    const abrirModalConfig=(__data)=>{
-        setModalConfiguracion(true)
-        setCurrentParam(__data)
-    }
+
     // creamos el parametro
     const crearParametro = async()=>{
         
