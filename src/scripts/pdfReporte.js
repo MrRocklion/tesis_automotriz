@@ -31,15 +31,18 @@ const generarPdf = (props_pdf) => {
     })
     aux = 40
     doc.setFont(undefined, 'bold').setFontSize(10).text("TABLA DE MANTENIMIENTOS", 15, aux);
-    autoTable(doc, {
-        body: props_pdf.data,
-          columns: [
-            { header: 'Actividad', dataKey: 'nombre' },
-            { header: 'Sistema', dataKey: 'sistema' },
-            { header: 'Tipo', dataKey: 'tipo' },
-            { header: 'km', dataKey: 'km' },
-          ],
-    })
+    props_pdf.data.forEach(element => {
+        autoTable(doc, {
+            body: element.data,
+              columns: [
+                { header: 'Actividad', dataKey: 'nombre' },
+                { header: 'Sistema', dataKey: 'sistema' },
+                { header: 'Tipo', dataKey: 'tipo' },
+                { header: 'km', dataKey: 'km' },
+              ],
+        }) 
+    });
+  
       
 
     

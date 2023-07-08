@@ -10,7 +10,6 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import IconButton from '@mui/material/IconButton';
 import TableRow from '@mui/material/TableRow';
-import SettingsIcon from '@mui/icons-material/Settings';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
@@ -41,8 +40,7 @@ export default function ParametrosView() {
     const [kilometros,setKiloemtros] = useState([]);
     const [km,setKm] = useState([]);
     const [modalConfiguracion,setModalConfiguracion] = useState(false);
-    const [currentParam,setCurrentParam] = useState({})
-    const [tipo, setTipo] = useState("NINGUNO");
+
     
 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -77,9 +75,7 @@ export default function ParametrosView() {
         });
     }
 
-    const handleChange = (event) => {
-        setTipo(event.target.value);
-    };
+
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };

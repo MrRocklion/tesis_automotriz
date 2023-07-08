@@ -4,21 +4,20 @@ import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import '../css/Analisis.css';
 import { db } from "../firebase/firebase-config";
-import { collection, setDoc, doc,getDocs,getDoc } from "firebase/firestore";
+import { collection, setDoc, doc, query, onSnapshot } from "firebase/firestore";
 import Grid from "@mui/material/Grid";
 import Autocomplete from '@mui/material/Autocomplete';
 import Swal from 'sweetalert2';
-import Typography from '@mui/material/Typography';
-import { useParams } from "react-router-dom";
-import TextareaAutosize from '@mui/material/TextareaAutosize';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
-import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
+import DescriptionIcon from '@mui/icons-material/Description';
+import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
+import { v4  } from 'uuid';
 import {
-	Modal,
-	ModalHeader,
-	ModalBody,
-	ModalFooter,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
 } from "reactstrap";
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -29,251 +28,259 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import IconButton from '@mui/material/IconButton';
 import TableRow from '@mui/material/TableRow';
-import PermDeviceInformationIcon from '@mui/icons-material/PermDeviceInformation';
 
-export default function VehiculosView(){
+
+
+let marcas = ['CHEVROLET', 'HYUNDAI', 'TOYOTA', 'KIA', 'NISSAN']
+let años_options = ['2006-2012', '2013-2018', '2019-2023']
+
+export default function VehiculosView() {
     const [modalInsertar, setModalinsertar] = useState(false);
-    const [tipoAuto, setTipoAuto] = useState([]);
-    const [tipoAños, setTipoAños] = useState([]);
     const [años, setAños] = useState([]);
-    const [tipo, setTipo] = useState();
-    const [descripcion,setDescripcion] = useState('');
-    const [parametros,setParametros] = useState([{}]);
+    const [kilometraje, setKilometraje] = useState("");
+    const [placa, setPlaca] = useState("");
     const [page, setPage] = useState(0);
+    const [marca, setMarca] = useState("");
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [registro, setRegistro] = useState([]);
     const navigate = useNavigate();
     const mostrarModalInsertar = () => {
-		setModalinsertar(true);
-	};
+        setModalinsertar(true);
+    };
     const cerrarModalInsertar = () => {
-		setModalinsertar(false);
-	};
+        setModalinsertar(false);
+    };
     const getData = async () => {
-		const reference = doc(db, "informacion", "documentacion");
-		const docSnap = await getDoc(reference);
-		let parametros = {}
-		if (docSnap.exists()) {
-			parametros = docSnap.data();
-			setTipoAuto(parametros.marca)
-            setTipoAños(parametros.año)
-		} else {
-			console.log("No such document!");
-		}
-        const ref_inventario = await getDocs(collection(db, "inventario"));
-        let aux_inventario = ref_inventario.docs.map((doc) => ({ ...doc.data() }))
-        aux_inventario.sort((a, b) => (b.indice - a.indice))
-        setRegistro(aux_inventario);
+
+        const q = query(collection(db, "inventario"));
+        onSnapshot(q, (querySnapshot) => {
+            const params = [];
+            querySnapshot.forEach((doc) => {
+                params.push(doc.data());
+            });
+            setRegistro(params);
+        });
 
 
-	}
+
+
+    }
 
     const IngresarEquipo = async () => {
-		var valorNuevo = {
-			//valores iniciales por defecto
-			marca: tipo,
-			año: años,
-            kilometros: [],
-            nombre:tipo+" "+años,
-			id:tipo+" "+años,
-		}
-		console.log(valorNuevo)
-		Swal.fire(
-			'Auto Registrado',
-			'',
-			'success'
-		)
-		console.log(valorNuevo)
-		sendFirestore(valorNuevo)
-		setModalinsertar(false);
-	}
+        let new_carro = {
+            marca: marca,
+            id: v4(),
+            year: años,
+            kilometraje_actual: kilometraje,
+            kilometraje_inicial:kilometraje,
+            placa: placa,
+            mantenimientos: [],
+        }
+
+        Swal.fire(
+            'Auto Registrado',
+            '',
+            'success'
+        )
+
+        sendFirestore(new_carro)
+        setModalinsertar(false);
+    }
 
     const sendFirestore = (_newEquipo) => {
 
-		try {
-			setDoc(doc(db, "inventario", `${_newEquipo.id}`), _newEquipo);
-		} catch (e) {
-			console.error("Error adding document: ", e);
-		}
-	};
+        try {
+            setDoc(doc(db, "inventario", `${_newEquipo.id}`), _newEquipo);
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
+    };
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
-      };
-    
-      const handleChangeRowsPerPage = (event) => {
+    };
+
+    const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
-      };
-
-      const navegarView = (ruta) => {
-        navigate(`/${ruta}`);
-    }
-
-      const cambiarAnalisis= () => {
-        navegarView('calculadora');
     };
+
+
+
+   
     useEffect(() => {
         getData();
-      }, [])
-    
-    
-    return(<>
-    
-    <Container style={{paddingTop:10}}>
-    <Grid container spacing={{ xs: 2 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-    <Grid item xs={12} md={12}>
+    }, [])
 
-<Button
-    variant="contained"
 
-    sx={{ height: "100%" }}
-    endIcon={<DirectionsCarIcon sx={{ fontSize: 100 }} />}
-    onClick={() => mostrarModalInsertar()}
->Ingresar Vehiculo</Button>
+    return (<>
 
-<Button
-    variant="contained"
+        <Container style={{ paddingTop: 10 }}>
+            <Grid container spacing={{ xs: 2 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                <Grid item xs={12} md={12}>
 
-    sx={{ height: "100%" }}
-    endIcon={<ManageHistoryIcon sx={{ fontSize: 100 }} />}
-    onClick={() => cambiarAnalisis()}
->Calcular</Button>
+                    <Button
+                        variant="contained"
 
-</Grid>
+                        sx={{ height: "100%" }}
+                        endIcon={<DirectionsCarIcon sx={{ fontSize: 100 }} />}
+                        onClick={() => mostrarModalInsertar()}
+                    >Ingresar Vehiculo</Button>
 
-<Grid item xs={12} >
+
+                </Grid>
+
+                <Grid item xs={12} >
                     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                         <TableContainer sx={{ maxHeight: 440 }}>
-                        <Table stickyHeader aria-label="sticky table">
-                                    <TableHead>
-                                        <TableRow>
+                            <Table stickyHeader aria-label="sticky table">
+                                <TableHead>
+                                    <TableRow>
                                         <TableCell
-                                                key={"last"}
-                                                align={"left"}
-                                                style={{ minWidth: 200 }}
-                                                >
-                                                Marca
-                                            </TableCell>
-                                            <TableCell
-                                                key={"Name"}
-                                                align={"left"}
-                                                style={{ minWidth: 200 }}
-                                                >
-                                                Año
-                                            </TableCell>
-                                            <TableCell
-                                                key={"modelo"}
-                                                align={"left"}
-                                                style={{ minWidth: 100 }}
-                                                >
-                                                Informacion
-                                            </TableCell>
-                                           
-                                      
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
+
+                                            align={"left"}
+                                            style={{ minWidth: 200 }}
+                                        >
+                                            Marca
+                                        </TableCell>
+                                        <TableCell
+
+                                            align={"left"}
+                                            style={{ minWidth: 200 }}
+                                        >
+                                            Año
+                                        </TableCell>
+                                        <TableCell
+
+                                            align={"left"}
+                                            style={{ minWidth: 100 }}
+                                        >
+                                            Placa
+                                        </TableCell>
+                                        <TableCell
+
+                                            align={"left"}
+                                            style={{ minWidth: 100 }}
+                                        >
+                                            Kilometraje
+                                        </TableCell>
+                                        <TableCell
+
+                                            align={"left"}
+                                            style={{ minWidth: 100 }}
+                                        >
+                                            Mantenimientos
+                                        </TableCell>
+
+
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
                                     {registro.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((row,index) => {
-                                        return (
-                                            <TableRow key={index}>
-                                                 <TableCell align="left">
-                                                 {row.marca}
-                                                </TableCell>
-                                                <TableCell align="left">
-                                                {row.año}
-                                                </TableCell>
-                                                
-                                                <TableCell align="center">
-                             
-                                                        <IconButton color="info" aria-label="informacion">
-                                                            <PermDeviceInformationIcon />
-                                                        </IconButton>
-                                                       
-                                                </TableCell>
+                                        .map((row, index) => {
+                                            return (
+                                                <TableRow key={index}>
+                                                    <TableCell align="left">
+                                                        {row.marca}
+                                                    </TableCell>
+                                                    <TableCell align="left">
+                                                        {row.year}
+                                                    </TableCell>
+                                                    <TableCell align="left">
+                                                        {row.placa}
+                                                    </TableCell>
+                                                    <TableCell align="left">
+                                                        {row.kilometraje}
+                                                    </TableCell>
 
-                                            </TableRow>);
+
+                                                    <TableCell align="center">
+                                                        <Stack direction="row" spacing={1}>
+
+                                                            <IconButton color="info" aria-label="informacion">
+                                                                <DescriptionIcon onClick={() => { navigate(`/calculadora/${row.id}`) }} />
+                                                            </IconButton>
+                                                        </Stack>
+                                                    </TableCell>
+
+                                                </TableRow>);
                                         })}
-                                    </TableBody>
-                                 
-                                </Table>
-                            </TableContainer>
-                            <TablePagination
-                                        rowsPerPageOptions={[10, 25, 100]}
-                                        component="div"
-                                        count={parametros.length}
-                                        rowsPerPage={rowsPerPage}
-                                        page={page}
-                                        onPageChange={handleChangePage}
-                                        onRowsPerPageChange={handleChangeRowsPerPage}
-                                    />
-                        </Paper>
-                    </Grid>
+                                </TableBody>
 
-<Modal className="{width:0px}" isOpen={modalInsertar}>
-<ModalHeader>
-					<div><h3>Ingresar Nuevo Vehiculo</h3></div>
-				</ModalHeader>
-                <ModalBody>
-                <Grid container spacing={2}>
-                
-                <Grid item xs={12}>
-                <Autocomplete
-								disableClearable
-								id="combo-box-demo"
-								options={tipoAuto}
-								onChange={(event, newvalue) => setTipo(newvalue)}
-								renderInput={(params) => <TextField {...params} fullWidth label="Marca" type="text" />}
-							/>
-                
-                      </Grid>
-
-                      <Grid item xs={12}>
-                <Autocomplete
-								disableClearable
-								id="combo-box-demo"
-								options={tipoAños}
-								onChange={(event, newvalue) => setAños(newvalue)}
-								renderInput={(params) => <TextField {...params} fullWidth label="Años" type="text" />}
-							/>
-                
-                      </Grid>
-
-                       {/* <Grid item xs={12}>
-                        <TextareaAutosize
-                          style={{textTransform:"uppercase"}} 
-                          aria-label="minimum height"
-                          value={descripcion}
-                          minRows={1}
-                          placeholder="KILOMETRAJE"
-                          className="text-area-encargado"
-                          onChange={(e) => setDescripcion(e.target.value)} 
+                            </Table>
+                        </TableContainer>
+                        <TablePagination
+                            rowsPerPageOptions={[10, 25, 100]}
+                            component="div"
+                            count={registro.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
                         />
-                
-                      </Grid> */}
-              
+                    </Paper>
                 </Grid>
-                </ModalBody>
-                <ModalFooter>					
-                    <Button
-						variant="outlined"
 
-						onClick={() => IngresarEquipo()}
-					>
-						Insertar
-					</Button>
-					<Button
-						variant="contained"
-	
-						onClick={() => cerrarModalInsertar()}
-					>
-						Cancelar
-					</Button>
-				</ModalFooter>
-</Modal>
+                <Modal className="{width:0px}" isOpen={modalInsertar}>
+                    <ModalHeader>
+                        <div><h3>Ingresar Nuevo Vehiculo</h3></div>
+                    </ModalHeader>
+                    <ModalBody>
+                        <Grid container spacing={2}>
 
-    </Grid>
-    </Container>
+                            <Grid item xs={12}>
+                                <Autocomplete
+                                    disableClearable
+                                    id="combo-box-demo"
+                                    options={marcas}
+                                    onChange={(event, newvalue) => { setMarca(newvalue) }}
+                                    renderInput={(params) => <TextField {...params} fullWidth label="Marca" type="text" />}
+                                />
+
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <Autocomplete
+                                    disableClearable
+                                    id="combo-box-demo"
+                                    options={años_options}
+                                    onChange={(event, newValue) => {
+                                        setAños(newValue);
+                                    }}
+                                    renderInput={(params) => <TextField {...params} fullWidth label="Años" type="text" />}
+                                />
+
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField id="outlined-basic" fullWidth label="Kilometraje" type="number" variant="outlined" onChange={(event) => setKilometraje(event.target.value)} />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField id="outlined-basic" fullWidth label="Placa" type="text" variant="outlined" onChange={(event) => setPlaca(event.target.value)} />
+                            </Grid>
+
+                        </Grid>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Stack direction="row" spacing={1}>
+                            <Button
+                                variant="outlined"
+
+                                onClick={() => IngresarEquipo()}
+                            >
+                                Insertar
+                            </Button>
+                            <Button
+                                variant="contained"
+
+                                onClick={() => cerrarModalInsertar()}
+                            >
+                                Cancelar
+                            </Button>
+                        </Stack>
+                    </ModalFooter>
+                </Modal>
+
+            </Grid>
+        </Container>
     </>)
 }

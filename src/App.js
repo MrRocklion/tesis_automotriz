@@ -12,7 +12,7 @@ function App() {
           <Route path="/" element={<ParametrosView/>} />
           <Route path="/parametros/:id" element={<ConfigParametroView/>} />
           <Route path="/vehiculos" element={<VehiculosView/>} />
-          <Route path="/calculadora" element={<AnalisisView/>} />
+          <Route path="/calculadora/:id" element={<AnalisisView/>} />
         </Routes>
     </div>
   );

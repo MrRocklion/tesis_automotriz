@@ -80,13 +80,6 @@ export default  function AppBarCarros(){
                         </ListItemIcon>
                         <ListItemText primary="Vehiculos"/>
             </ListItemButton>
-
-            <ListItemButton onClick={()=>{navigate('/calculadora')}} >
-                        <ListItemIcon>
-                            <DriveEtaIcon fontSize='large' />
-                        </ListItemIcon>
-                        <ListItemText primary="Analisis"/>
-            </ListItemButton>
             </List>
             
       </Drawer>

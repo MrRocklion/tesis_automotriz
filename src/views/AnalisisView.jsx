@@ -1,28 +1,51 @@
 import React, { useState, useEffect } from "react";
 import TextField from '@mui/material/TextField';
-import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import '../css/Analisis.css';
 import Container from '@mui/material/Container';
 import logo from '../components/imagenes/carros.PNG';
 import { db } from "../firebase/firebase-config";
-import { v4 as uuidv4 } from 'uuid';
 import Grid from "@mui/material/Grid";
-import Autocomplete from '@mui/material/Autocomplete';
-import { collection, setDoc, query, doc, deleteDoc, updateDoc, getDocs, getDoc, where } from "firebase/firestore";
+import { collection, query, doc, updateDoc, getDocs, where,onSnapshot } from "firebase/firestore";
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Swal from 'sweetalert2';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import Chip from '@mui/material/Chip';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { generarPdf } from "../scripts/pdfReporte";
+import { useParams } from "react-router-dom";
+import {
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "reactstrap";
+function obtenerDatosNoRepetidos(arreglo1, arreglo2) {
+  const datosNoRepetidos = [];
 
+  // Comprobar elementos del arreglo1 que no están en el arreglo2
+  for (let i = 0; i < arreglo1.length; i++) {
+    if (!arreglo2.includes(arreglo1[i]) && !datosNoRepetidos.includes(arreglo1[i])) {
+      datosNoRepetidos.push(arreglo1[i]);
+    }
+  }
 
+  // Comprobar elementos del arreglo2 que no están en el arreglo1
+  for (let i = 0; i < arreglo2.length; i++) {
+    if (!arreglo1.includes(arreglo2[i]) && !datosNoRepetidos.includes(arreglo2[i])) {
+      datosNoRepetidos.push(arreglo2[i]);
+    }
+  }
+
+  return datosNoRepetidos;
+}
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -45,27 +68,28 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export default function AnalisisView() {
-  const [tipoAuto, setTipoAuto] = useState([]);
-  const [tipoAños, setTipoAños] = useState([]);
-  const [años, setAños] = useState([]);
-  const [tipo, setTipo] = useState();
-  const [descripcion, setDescripcion] = useState('');
-  const [planificacion,setPlanificacion]  = useState([{}]);
-  const [kilometros,setKilometros] = useState([]);
-  const [kmTarget,setKmTarget]= useState(0);
+  let { id } = useParams();
+  const [flagTipoMan,setFlagTipoMan] = useState(true)
+  const [vehiculo,setVehiculo] = useState({marca:''});
+  const [kms,setKms] = useState(0);
+  const [modalMantenimientos,setModalMantenimientos] = useState(false)
+  const [mantenimientos,setMantenimientos] = useState([{data:[],name:0}])
+  const [titulo,setTitulos]  = useState("Nuevos Mantenimientos Programados")
+  const [manProgramados,setManProgramados] = useState([])
 
-  const getData = async () => {
-    const reference = doc(db, "informacion", "documentacion");
-    const docSnap = await getDoc(reference);
-    let parametros = {}
-    if (docSnap.exists()) {
-      parametros = docSnap.data();
-      setTipoAuto(parametros.marca)
-      setTipoAños(parametros.año)
-    } else {
-      console.log("No such document!");
-    }
-  }
+
+  const readData = () => {
+    onSnapshot(doc(db, "inventario", id), (doc) => {
+        setVehiculo(doc.data())
+
+    })
+}
+const abrirModalMantenimiento =()=>{
+
+  setModalMantenimientos(true)
+}
+
+
   const encontrarIndiceUltimoMenor =(arr, numero) =>{
     let valor = null; // Valor inicial del último número menor
 
@@ -78,54 +102,172 @@ export default function AnalisisView() {
   return valor;
   }
   const Calcular = async () => {
-  
-    let name_target = `${tipo} ${años}`
-    console.log(name_target)
-    const q = query(collection(db, "parametros"), where("nombre", "==", name_target));
-    let data = []
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      data = doc.data()
-    });
-    console.log(data)
-    try {
-      let aux_km = data.kilometros.map(item =>(item * 1000))
-   
-      let valor = encontrarIndiceUltimoMenor(aux_km,parseInt(kilometros))/1000
-      let datos_man = data.mantenimientos.filter(item=> item.km === valor)
-      setPlanificacion(datos_man)
-      console.log(datos_man);
-      setKmTarget(valor)
+    let constante1 =  parseInt(vehiculo.kilometraje_actual)
+    let constante2 = parseInt(kms)
+    if(constante1 < constante2){
 
-    } catch (error) {
+      let name_target = `${vehiculo.marca} ${vehiculo.year}`
+      const q = query(collection(db, "parametros"), where("nombre", "==", name_target));
+      let data = []
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        data = doc.data()
+      });
+  
+      try {
+        if(vehiculo.mantenimientos.length <1){
+          let data_mans_faltantes = []
+          let aux_km = data.kilometros.map(item =>(item * 1000))
+          let temp_kms = parseInt(kms) - parseInt(vehiculo.kilometraje_inicial)
+          let valor = encontrarIndiceUltimoMenor(aux_km,parseInt(temp_kms))/1000
+          let kilometrajes_man = data.kilometros.filter(item => item <= valor)
+          setManProgramados(kilometrajes_man)
+          for (let i = 0;i< kilometrajes_man.length;i++){
+            let datos_man = data.mantenimientos.filter(item=> item.km === kilometrajes_man[i])
+            let object_man = {
+              data:datos_man,
+              name:kilometrajes_man[i]
+            }
+        
+            data_mans_faltantes.push(object_man)
+          }
+
+         setMantenimientos(data_mans_faltantes)
+         setModalMantenimientos(false)
+         setFlagTipoMan(false)
+         setTitulos("Nuevos Mantenimientos Programados")
       
+        }else{
+          let data_mans_faltantes = []
+          let aux_km = data.kilometros.map(item =>(item * 1000))
+          let temp_kms = parseInt(kms) - parseInt(vehiculo.kilometraje_inicial)
+          let valor = encontrarIndiceUltimoMenor(aux_km,parseInt(temp_kms))/1000
+          let kilometrajes_man = data.kilometros.filter(item => item <= valor)
+          let aux_man_unicos = obtenerDatosNoRepetidos(vehiculo.mantenimientos,kilometrajes_man)
+          setManProgramados(kilometrajes_man)
+          for (let i = 0;i< aux_man_unicos.length;i++){
+            let datos_man = data.mantenimientos.filter(item=> item.km === aux_man_unicos[i])
+            let object_man = {
+              data:datos_man,
+              name:aux_man_unicos[i]
+            }
+        
+            data_mans_faltantes.push(object_man)
+          }
+
+         setMantenimientos(data_mans_faltantes)
+         setModalMantenimientos(false)
+         setFlagTipoMan(false)
+         setTitulos("Nuevos Mantenimientos Programados")
+        }
+   
+  
+      } catch (error) {
+        setFlagTipoMan(true)
+      }
+    }else{
+      Swal.fire(
+        'Kilometraje Inferior',
+        '',
+        'warning'
+    )
     }
   }
+  const guardarMantenimientosRealizados= ()=>{
 
-  const crearPdf =()=>{
-
-      let parametros = {
-        data: planificacion,
-        fecha: "19-07-1999"
+    Swal.fire({
+      title: 'Estas Seguro?',
+      text: "Este Plan se Registrara en la base de datos!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si,guardar'
+    }).then(async(result) => {
+      if (result.isConfirmed) {
+        let vehiculo_updated = JSON.parse(JSON.stringify(vehiculo))
+        vehiculo_updated.kilometraje_actual = kms
+        vehiculo_updated.mantenimientos = manProgramados
+        setVehiculo(vehiculo_updated)
+        const ref = doc(db, "inventario", id);
+        await updateDoc(ref, {
+            mantenimientos: manProgramados,
+            kilometraje_actual:kms,
+          });
+        Swal.fire(
+          'Mantenimiento agregado!',
+          'Your file has been deleted.',
+          'success'
+        )
       }
-      //generarPdf(parametros)
+    })
+   
+
+  }
+  const graficarManRealizados =async()=>{
+    setFlagTipoMan(true)
+    let name_target = `${vehiculo.marca} ${vehiculo.year}`
+      const q = query(collection(db, "parametros"), where("nombre", "==", name_target));
+      let data = []
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        data = doc.data()
+      });
+  
+      try {
+        if(vehiculo.mantenimientos.length >1){
+          let data_mans_faltantes = []
+          let kilometrajes_man = vehiculo.mantenimientos
+          console.log(kilometrajes_man)
+          setManProgramados(kilometrajes_man)
+          for (let i = 0;i< kilometrajes_man.length;i++){
+            let datos_man = data.mantenimientos.filter(item=> item.km === kilometrajes_man[i])
+            let object_man = {
+              data:datos_man,
+              name:kilometrajes_man[i]
+            }
+        
+            data_mans_faltantes.push(object_man)
+          }
+
+         setMantenimientos(data_mans_faltantes)
+         setFlagTipoMan(true)
+         setTitulos("Mantenimientos Realizados")
+      
+        }else{
+          Swal.fire(
+            'No hay Mantenimientos!',
+            '',
+            'error'
+          )
+        }
+   
+  
+      } catch (error) {
+        setFlagTipoMan(true)
+      }
+
+
+  }
+  const crearPdf =()=>{
+    const hoy = new Date()
+      let parametros = {
+        data: mantenimientos,
+        fecha: hoy.toLocaleDateString()
+      }
+      generarPdf(parametros)
     
   }
 
   useEffect(() => {
-    getData();
+    readData();
+    // eslint-disable-next-line
   }, [])
 
 
   return (<>
-    <Container maxWidth="lg">
-      <Grid container spacing={4} >
-        <Grid item xs={12}>
-          <Typography component="div" variant="h4" className="princi3" >
-            INGRESO VEHICULOS
-          </Typography>
-        </Grid>
-      </Grid>
+    <Container maxWidth="lg" sx={{paddingTop:2}}>
+    
 
       <div className="container">
         <div className="column">
@@ -144,33 +286,37 @@ export default function AnalisisView() {
 
                 </Grid>
                 <Grid item xs={12}  >
-                <Autocomplete
-                    disableClearable
-                    id="combo-box-demo"
-                    options={tipoAuto}
-                    onChange={(event, newvalue) => setTipo(newvalue)}
-                    renderInput={(params) => <TextField {...params} fullWidth label="MARCA" type="text" />}
-                  />
+                <TextField id="outlined-basic" fullWidth label="marca" value={vehiculo.marca}   defaultValue="Hello World" type="text" variant="outlined"  />
                 </Grid>
                 <Grid item xs={12} >
-                <Autocomplete
-                    disableClearable
-                    id="combo-box-demo"
-                    options={tipoAños}
-                    onChange={(event, newvalue) => setAños(newvalue)}
-                    renderInput={(params) => <TextField {...params} fullWidth label="RANGO" type="text" />}
-                  />
+                <TextField id="outlined-basic" fullWidth label="marca" value={vehiculo.year}  defaultValue="Hello World" type="text" variant="outlined"  />
                 </Grid>
                 <Grid item xs={12} >
-                <TextField id="outlined-basic" fullWidth label="kilometros" value={kilometros} type="number" variant="outlined" onChange={(event,newValue)=>{setKilometros(event.target.value)}} />
-                          </Grid>
+                <TextField id="outlined-basic" fullWidth label="placa" value={vehiculo.placa}  defaultValue="Hello World" type="text" variant="outlined"  />
+                </Grid>
+                <Grid item xs={12} >
+                <TextField id="outlined-basic" fullWidth label="Kilometraje Inicial" value={vehiculo.kilometraje_inicial}  defaultValue="Hello World" type="text" variant="outlined"  />
+                </Grid>
+                <Grid item xs={12} >
+                <TextField id="outlined-basic" fullWidth label="Kilometraje Actual" value={vehiculo.kilometraje_actual}  defaultValue="Hello World" type="text" variant="outlined"  />
+                </Grid>
                 <Grid item xs={12} >
                 <Button
                     variant="outlined"
                     className="boton-modal2"
-                    onClick={() => Calcular()}
+                    onClick={() => abrirModalMantenimiento()}
                   >
                     PROGRAMAR MANTENIMIENTO
+                  </Button>
+                </Grid>
+                <Grid item xs={12} >
+                <Button
+                    variant="outlined"
+                    className="boton-modal2"
+                    onClick={() => graficarManRealizados()}
+                    color="verde2"
+                  >
+                    VISUALIZAR MANTENIMIENTOS REALIZADOS
                   </Button>
                 </Grid>
               </Grid>
@@ -197,47 +343,67 @@ export default function AnalisisView() {
               </Grid>
 
               <Grid item xs={12} md={8} >
-                <div className="panelp2" style={{ backgroundImage: `url(${logo})` }}>
-
+                <div className="panelp2" style={{ backgroundImage: `url(${logo})`,overflowY:"scroll",height:630 }}>
+                <Grid item xs={12} >
+                <Typography component="div" variant="h2" className="titulou" >
+                  {titulo}
+                      </Typography>
+                </Grid>
                   <Grid container spacing={3}>
-                    <Grid item xs={12} >
-                      <Typography component="div" variant="h8" className="titulou" >
-                        <b>Mantenimiento Programado</b>
-                      </Typography>
-                      <Typography component="div" variant="h8" className="titulou" >
-                        <b>Kilometraje:</b> {kmTarget*1000}
+                    <Grid item xs={5} >
+                    <Typography component="div" variant="h8" className="titulou" >
+                        <div><b>kilometraje Ingresado: {kms}</b></div>
+                       <div> <b>kilometraje Inicial: {vehiculo.kilometraje_inicial}</b></div>
                       </Typography>
                     </Grid>
-                    <Grid item xs={12} >
+                    <Grid item xs={6} >
+                    <Button
+                    variant="contained"
+                    size="small"
+                    color="rojo"
+                    onClick={guardarMantenimientosRealizados}
+                    disabled={flagTipoMan}
+                  >
+                    GUARDAR MANTENIMIENTO
+                  </Button>
+                    </Grid>
+                    {
+                      mantenimientos.map((item) =>(
+                        <Grid item xs={12} >
 
+                    <Chip label={`Mantenimiento a los  ${item.name*1000}`} sx={{marginBottom:1}} color="success" />
+                <TableContainer sx={{overflowY:"scroll",height:450}} component={Paper}>
+                  <Table  aria-label="customized table">
+              
+                    <TableHead>
+  
+                    <TableRow>
+              
+                      <StyledTableCell align="left">#</StyledTableCell>
+                      <StyledTableCell align="left">Actividades</StyledTableCell>
+                      <StyledTableCell align="left">Sistema</StyledTableCell>
+                      <StyledTableCell align="left">Tipo</StyledTableCell>
                       
-							<TableContainer sx={{overflowY:"scroll",height:450}} component={Paper}>
-								<Table  aria-label="customized table">
-            
-									<TableHead>
+                    </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {item.data.map((row,index) => (
+                      <StyledTableRow key={index}>
+                      <StyledTableCell align="left">{index+1}</StyledTableCell>
+                      <StyledTableCell align="left">{row.nombre}</StyledTableCell>
+                      <StyledTableCell align="left">{row.sistema}</StyledTableCell>
+                      <StyledTableCell align="left">{row.tipo}</StyledTableCell>
+                      </StyledTableRow>
+                    ))}
+                    </TableBody>
+                  </Table>
+                  </TableContainer>
+                      </Grid>
 
-									<TableRow>
-						
-										<StyledTableCell align="left">#</StyledTableCell>
-										<StyledTableCell align="left">Actividades</StyledTableCell>
-                    <StyledTableCell align="left">Sistema</StyledTableCell>
-                    <StyledTableCell align="left">Tipo</StyledTableCell>
-										
-									</TableRow>
-									</TableHead>
-									<TableBody>
-									{planificacion.map((row,index) => (
-										<StyledTableRow key={index}>
-										<StyledTableCell align="left">{index+1}</StyledTableCell>
-										<StyledTableCell align="left">{row.nombre}</StyledTableCell>
-                    <StyledTableCell align="left">{row.sistema}</StyledTableCell>
-                    <StyledTableCell align="left">{row.tipo}</StyledTableCell>
-										</StyledTableRow>
-									))}
-									</TableBody>
-								</Table>
-								</TableContainer>
-                    </Grid>
+
+
+                      ))}
+                   
                   </Grid>
                 </div>
               </Grid>
@@ -252,6 +418,40 @@ export default function AnalisisView() {
 
       </div>
     </Container>
+
+    <Modal className="{width:0px}" isOpen={modalMantenimientos}>
+                    <ModalHeader>
+                        <div><h3>Ingresar Nuevo Kilometraje</h3></div>
+                    </ModalHeader>
+                    <ModalBody>
+                        <Grid container spacing={2}>
+
+
+                            
+                            <Grid item xs={12}>
+                                <TextField id="outlined-basic" fullWidth label="Kilometraje" value={kms} type="number" variant="outlined" onChange={(event) => setKms(event.target.value)} />
+                            </Grid>
+                           
+
+                        </Grid>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Stack direction="row" spacing={1}>
+                            <Button
+                                variant="outlined"
+                                onClick={() => Calcular()}
+                            >
+                                Calcular
+                            </Button>
+                            <Button
+                                variant="contained"
+                                onClick={() => setModalMantenimientos(false)}
+                            >
+                              cancelar
+                            </Button>
+                        </Stack>
+                    </ModalFooter>
+                </Modal>
   </>
   )
 }
