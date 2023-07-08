@@ -71,6 +71,7 @@ export default function VehiculosView() {
             marca: marca,
             id: v4(),
             year: años,
+            kilometraje: kilometraje,
             kilometraje_actual: kilometraje,
             kilometraje_inicial:kilometraje,
             placa: placa,
