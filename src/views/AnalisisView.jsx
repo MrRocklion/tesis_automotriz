@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import '../css/Analisis.css';
 import Container from '@mui/material/Container';
-import logo from '../components/imagenes/carros.PNG';
+import logo from '../components/imagenes/Capture.PNG';
 import { db } from "../firebase/firebase-config";
 import Grid from "@mui/material/Grid";
 import { collection, query, doc, updateDoc, getDocs, where,onSnapshot } from "firebase/firestore";
@@ -74,7 +74,7 @@ export default function AnalisisView() {
   const [kms,setKms] = useState(0);
   const [modalMantenimientos,setModalMantenimientos] = useState(false)
   const [mantenimientos,setMantenimientos] = useState([{data:[],name:0}])
-  const [titulo,setTitulos]  = useState("Nuevos Mantenimientos Programados")
+  const [titulo,setTitulos]  = useState("Mantenimiento Automotriz")
   const [manProgramados,setManProgramados] = useState([])
 
 
@@ -135,7 +135,7 @@ const abrirModalMantenimiento =()=>{
          setMantenimientos(data_mans_faltantes)
          setModalMantenimientos(false)
          setFlagTipoMan(false)
-         setTitulos("Nuevos Mantenimientos Programados")
+         setTitulos("Mantenimiento Automotriz")
       
         }else{
           let data_mans_faltantes = []
@@ -158,7 +158,7 @@ const abrirModalMantenimiento =()=>{
          setMantenimientos(data_mans_faltantes)
          setModalMantenimientos(false)
          setFlagTipoMan(false)
-         setTitulos("Nuevos Mantenimientos Programados")
+         setTitulos("Mantenimiento Automotriz")
         }
    
   
@@ -177,7 +177,7 @@ const abrirModalMantenimiento =()=>{
 
     Swal.fire({
       title: 'Estas Seguro?',
-      text: "Este Plan se Registrara en la base de datos!",
+      text: "Este Plan se registrará en la base de datos!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -195,7 +195,7 @@ const abrirModalMantenimiento =()=>{
             kilometraje_actual:kms,
           });
         Swal.fire(
-          'Mantenimiento agregado!',
+          'Mantenimiento Agregado!',
           'Your file has been deleted.',
           'success'
         )
@@ -266,7 +266,7 @@ const abrirModalMantenimiento =()=>{
 
 
   return (<>
-    <Container maxWidth="lg" sx={{paddingTop:2}}>
+    <Container maxWidth="xl" sx={{paddingTop:2}}>
     
 
       <div className="container">
@@ -280,19 +280,19 @@ const abrirModalMantenimiento =()=>{
                 <Grid container spacing={1}  >
                   
                 <Grid item xs={12} >
-                    <Typography component="div" variant="h8" className="titulou" >
-                      <b>Datos Vehículo</b>
+                    <Typography component="div" variant="h1" className="princi2" >
+                      Datos Vehículo
                     </Typography>
 
                 </Grid>
                 <Grid item xs={12}  >
-                <TextField id="outlined-basic" fullWidth label="marca" value={vehiculo.marca}   defaultValue="Hello World" type="text" variant="outlined"  />
+                <TextField id="outlined-basic" fullWidth label="Marca" value={vehiculo.marca}   defaultValue="Hello World" type="text" variant="outlined"  />
                 </Grid>
                 <Grid item xs={12} >
-                <TextField id="outlined-basic" fullWidth label="marca" value={vehiculo.year}  defaultValue="Hello World" type="text" variant="outlined"  />
+                <TextField id="outlined-basic" fullWidth label="Año" value={vehiculo.year}  defaultValue="Hello World" type="text" variant="outlined"  />
                 </Grid>
                 <Grid item xs={12} >
-                <TextField id="outlined-basic" fullWidth label="placa" value={vehiculo.placa}  defaultValue="Hello World" type="text" variant="outlined"  />
+                <TextField id="outlined-basic" fullWidth label="Placa" value={vehiculo.placa}  defaultValue="Hello World" type="text" variant="outlined"  />
                 </Grid>
                 <Grid item xs={12} >
                 <TextField id="outlined-basic" fullWidth label="Kilometraje Inicial" value={vehiculo.kilometraje_inicial}  defaultValue="Hello World" type="text" variant="outlined"  />
@@ -300,7 +300,7 @@ const abrirModalMantenimiento =()=>{
                 <Grid item xs={12} >
                 <TextField id="outlined-basic" fullWidth label="Kilometraje Actual" value={vehiculo.kilometraje_actual}  defaultValue="Hello World" type="text" variant="outlined"  />
                 </Grid>
-                <Grid item xs={12} >
+                <Grid item xs={6} >
                 <Button
                     variant="outlined"
                     className="boton-modal2"
@@ -309,14 +309,13 @@ const abrirModalMantenimiento =()=>{
                     PROGRAMAR MANTENIMIENTO
                   </Button>
                 </Grid>
-                <Grid item xs={12} >
+                <Grid item xs={6} >
                 <Button
                     variant="outlined"
                     className="boton-modal2"
                     onClick={() => graficarManRealizados()}
-                    color="verde2"
                   >
-                    VISUALIZAR MANTENIMIENTOS REALIZADOS
+                    VISUALIZAR MANTENIMIENTOS
                   </Button>
                 </Grid>
               </Grid>
@@ -324,8 +323,8 @@ const abrirModalMantenimiento =()=>{
                 <div className="panelp2">
                 <Grid container spacing={1} > 
                     <Grid item xs={12} >
-                         <Typography component="div" variant="h8" className="titulou" >
-                           <b>Generar Reporte</b>
+                         <Typography component="div" variant="h1" className="princi2" >
+                           Generar Reporte
                          </Typography>
                      </Grid>
                   <Grid item xs={12} >
@@ -345,33 +344,34 @@ const abrirModalMantenimiento =()=>{
               <Grid item xs={12} md={8} >
                 <div className="panelp2" style={{ backgroundImage: `url(${logo})`,overflowY:"scroll",height:630 }}>
                 <Grid item xs={12} >
-                <Typography component="div" variant="h2" className="titulou" >
+                <Typography component="div" variant="h1" className="princi3" >
                   {titulo}
                       </Typography>
                 </Grid>
                   <Grid container spacing={3}>
-                    <Grid item xs={5} >
-                    <Typography component="div" variant="h8" className="titulou" >
-                        <div><b>kilometraje Ingresado: {kms}</b></div>
-                       <div> <b>kilometraje Inicial: {vehiculo.kilometraje_inicial}</b></div>
+                    <Grid item xs={7} >
+                    <Typography component="div" variant="h8" className="datos" >
+                       <div> <b>Kilometraje Inicial: {vehiculo.kilometraje_inicial}</b></div>
+                       <div><b>Kilometraje Anterior: {kms}</b></div>
+                       <div><b>Kilometraje Actual: {kms}</b></div>
                       </Typography>
                     </Grid>
-                    <Grid item xs={6} >
+                    <Grid item xs={5} >
                     <Button
-                    variant="contained"
-                    size="small"
-                    color="rojo"
+                    variant="outlined"
+                    className="boton-modal3"
                     onClick={guardarMantenimientosRealizados}
                     disabled={flagTipoMan}
                   >
                     GUARDAR MANTENIMIENTO
                   </Button>
+                  
                     </Grid>
                     {
                       mantenimientos.map((item) =>(
                         <Grid item xs={12} >
 
-                    <Chip label={`Mantenimiento a los  ${item.name*1000}`} sx={{marginBottom:1}} color="success" />
+                    <Chip label={`Mantenimiento a los  ${item.name*1000}`} sx={{marginBottom:1}} className="rosita" />
                 <TableContainer sx={{overflowY:"scroll",height:450}} component={Paper}>
                   <Table  aria-label="customized table">
               

@@ -1,12 +1,37 @@
 .princi3{
-    color: #977F2F !important;
+  color: #34495e !important;
     font-family: "Cormorant Garamond", serif !important;
     font-size: 30px !important;
-    padding-top: 20px;
-    padding-bottom: 10px;
-    margin-bottom: 5px !important;
+    padding-top: 45px!important;
+    padding-left: 30%;
+    padding-bottom: 10px!important;
+    margin-bottom: 45px !important;
     align-items: center!important;
-    
+  }
+
+.princi2{
+    color: #34495e !important;
+      font-family: "Cormorant Garamond", serif !important;
+      font-size: 30px !important;
+      padding-top: 5px;
+      padding-left: 25%;
+      padding-bottom: 10px;
+      margin-bottom: 5px !important;
+      align-items: center!important;
+    }
+  .css-r5r38p-MuiContainer-root {
+    max-width: 90% !important;
+}
+
+
+  .datos{
+    color: #34495e !important;
+    font-family: "Cormorant Garamond", serif !important;
+    font-size: 15px !important;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10%;
+    margin-bottom: 5px !important;
   }
 
 .text-area-encargado{
@@ -27,9 +52,29 @@
 .boton-modal2{
   width: 100%;
   height: 50px;
-  font-size: 16px !important;
-  font-weight: 500!important;
+  font-size: 14px !important;
+  font-weight: 200!important;
   margin-right: 5px!important;
+}
+
+.boton-modal3{
+  width: 70%;
+  height: 50px;
+  font-size: 14px !important;
+  font-weight: 200!important;
+  margin-right: 5px!important;
+  margin-left: 25px!important;
+}
+
+
+.boton-modal1{
+  width: 100%;
+  height: 50px;
+  font-size: 14px !important;
+  font-weight: 200!important;
+  margin-right: 5px!important;
+  border-color: rgb(254 168 69)!important;
+  color: rgb(254 168 69)!important;
 }
 
 .panelp2{
@@ -40,6 +85,8 @@
   border-style:groove;
   background-color:hsla(180, 8%, 95%, 0.025) ;
 }
-.panel-tabla-man{
-  
+
+.rosita{
+  background-color: rgb(254 168 69) !important;
+  margin-left: 5%;
 }
