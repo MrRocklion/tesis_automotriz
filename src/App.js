@@ -4,6 +4,7 @@ import AnalisisView from "./views/AnalisisView";
 import ParametrosView from "./views/ParametrosView";
 import VehiculosView from "./views/VehiculosView";
 import ConfigParametroView from "./views/configParametroView";
+import ManipulacionView from "./views/manipulacionView";
 function App() {
   return (
     <div className="App">
@@ -13,6 +14,7 @@ function App() {
           <Route path="/parametros/:id" element={<ConfigParametroView/>} />
           <Route path="/vehiculos" element={<VehiculosView/>} />
           <Route path="/calculadora/:id" element={<AnalisisView/>} />
+          <Route path="/manipulacion" element={<ManipulacionView/>} />
         </Routes>
     </div>
   );

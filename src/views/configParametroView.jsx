@@ -96,6 +96,8 @@ export default function ConfigParametroView() {
        setCurrentList(filter_mans)
         
     }
+    // esta funcion se encarga de actulizar el parametro mantenimientos en la base de datos de cada uno de los parametros
+    
     const abrirModalActividades = ()=>{
         setCurrentList(mantenimientos)
         setModalActividad(true)
@@ -211,7 +213,7 @@ export default function ConfigParametroView() {
                                                 align={"left"}
                                                 style={{ minWidth: 100 }}
                                             >
-                                                Km
+                                                Km x(1000)
                                             </TableCell>
                                             <TableCell
                                         

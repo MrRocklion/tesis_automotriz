@@ -29,7 +29,6 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 export default function ParametrosView() {
     const navigate = useNavigate();
     const [marca, setMarca] = useState("CHEVROLET");
-    const [planes, setPlanes] = useState([]);
     const [parametros,setParametros]  = useState([]);
     const [actividad, setActividad] = useState(data_json.actividades[0])
     const [yearStart,setYearStart]= useState('');
@@ -66,7 +65,7 @@ export default function ParametrosView() {
 
     const readData=()=>{
         const q = query(collection(db, "parametros"));
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        onSnapshot(q, (querySnapshot) => {
         const params = [];
         querySnapshot.forEach((doc) => {
             params.push(doc.data());
@@ -91,8 +90,6 @@ export default function ParametrosView() {
         kms.sort(function(a, b){return a - b})
         let datos_filtrados = eliminarDuplicados(kms)
         setKiloemtros(datos_filtrados)
-
-        
     }
     // metodo para eliminar duplicados
     const eliminarDuplicados =(numeros)=>{
@@ -133,6 +130,7 @@ export default function ParametrosView() {
         await setDoc(doc(db, "parametros", new_param.id),new_param);
         setModalParametro(false)
     }
+    
     useEffect(() => {
         readData();
         // eslint-disable-next-line
@@ -149,10 +147,17 @@ export default function ParametrosView() {
                 
                     <Grid item xs={12} >
                         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                            <TableContainer sx={{ maxHeight: 440 }}>
+                            <TableContainer sx={{ maxHeight: 610 }}>
                                 <Table stickyHeader aria-label="sticky table">
                                     <TableHead>
                                         <TableRow>
+                                        <TableCell
+                                         
+                                         align={"left"}
+                                         style={{ minWidth: 200 }}
+                                     >
+                                         Nro
+                                     </TableCell>
                                             <TableCell
                                          
                                                 align={"left"}
@@ -190,6 +195,9 @@ export default function ParametrosView() {
                                             .map((row, index) => {
                                                 return (
                                                     <TableRow key={index}>
+                                                          <TableCell align="left">
+                                                            {index+1}
+                                                        </TableCell>
                                                         <TableCell align="left">
                                                             {row.nombre}
                                                         </TableCell>
@@ -219,7 +227,7 @@ export default function ParametrosView() {
                             <TablePagination
                                 rowsPerPageOptions={[10, 25, 100]}
                                 component="div"
-                                count={planes.length}
+                                count={parametros.length}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
                                 onPageChange={handleChangePage}
@@ -253,6 +261,7 @@ export default function ParametrosView() {
                                             <MenuItem value={"HYUNDAY"}>Hyunday</MenuItem>
                                             <MenuItem value={"KIA"}>Kia</MenuItem>
                                             <MenuItem value={"NISSAN"}>Nissan</MenuItem>
+                                            <MenuItem value={"TOYOTA"}>Toyota</MenuItem>
                                         </Select>
                                     </FormControl>
                             </Grid>

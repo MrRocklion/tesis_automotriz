@@ -38,7 +38,7 @@ const generarPdf = (props_pdf) => {
                 { header: 'Actividad', dataKey: 'nombre' },
                 { header: 'Sistema', dataKey: 'sistema' },
                 { header: 'Tipo', dataKey: 'tipo' },
-                { header: 'km', dataKey: 'km' },
+                { header: 'km * 1000', dataKey: 'km' },
               ],
         }) 
     });
