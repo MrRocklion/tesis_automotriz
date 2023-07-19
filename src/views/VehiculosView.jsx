@@ -236,7 +236,7 @@ export default function VehiculosView() {
                                                         <Stack direction={"row"}   sx={{ alignItems: 'center' }}>
 
                                                             <IconButton color="info" aria-label="informacion">
-                                                                <DescriptionIcon onClick={() => { navigate(`/calculadora/${row.id}`) }} />
+                                                                <DescriptionIcon onClick={() => { navigate(`${row.id}`) }} />
                                                             </IconButton>
                                                             <IconButton color="rojo" onClick={()=>{eliminarVehiculo(row)}} aria-label="informacion">
                                                                 <DeleteIcon/>

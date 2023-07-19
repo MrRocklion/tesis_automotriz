@@ -209,7 +209,7 @@ export default function ParametrosView() {
                                                         </TableCell>
                                                         <TableCell align="center">
 
-                                                            <IconButton onClick={()=>{navigate(`parametros/${row.id}`)}} color="amarillo" aria-label="eliminar">
+                                                            <IconButton onClick={()=>{navigate(`${row.id}`)}} color="amarillo" aria-label="eliminar">
                                                                 <AssignmentIcon />
                                                             </IconButton>
                                                             <IconButton color="rojo" aria-label="eliminar">

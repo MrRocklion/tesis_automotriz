@@ -67,14 +67,14 @@ export default  function AppBarCarros(){
           </ListSubheader>
           }
         >
-             <ListItemButton onClick={()=>{navigate('/')}} >
+             <ListItemButton onClick={()=>{navigate('parametros')}} >
                         <ListItemIcon>
                             <SettingsIcon fontSize='large' />
                         </ListItemIcon>
                         <ListItemText primary="Parametros"/>
             </ListItemButton>
 
-            <ListItemButton onClick={()=>{navigate('/vehiculos')}} >
+            <ListItemButton onClick={()=>{navigate('vehiculos')}} >
                         <ListItemIcon>
                             <DriveEtaIcon fontSize='large' />
                         </ListItemIcon>
