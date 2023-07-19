@@ -20,13 +20,17 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { styled } from '@mui/material/styles';
-import { doc, setDoc ,collection, query, onSnapshot } from "firebase/firestore"; 
+import { doc, setDoc ,collection, query, onSnapshot,deleteDoc} from "firebase/firestore"; 
+import Swal from 'sweetalert2';
 import { v4 as uuidv4 } from 'uuid';
 import { db } from "../firebase/firebase-config";
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useParams } from 'react-router-dom';
 export default function ParametrosView() {
+    let { uid } = useParams();
     const navigate = useNavigate();
     const [marca, setMarca] = useState("CHEVROLET");
     const [parametros,setParametros]  = useState([]);
@@ -39,7 +43,7 @@ export default function ParametrosView() {
     const [kilometros,setKiloemtros] = useState([]);
     const [km,setKm] = useState([]);
     const [modalConfiguracion,setModalConfiguracion] = useState(false);
-
+    const [flagLoading,setFlagLoading] = useState(false);
     
 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -70,7 +74,8 @@ export default function ParametrosView() {
         querySnapshot.forEach((doc) => {
             params.push(doc.data());
         });
-        setParametros(params);
+        let data_filter = params.filter(item => item.user_id === uid)
+        setParametros(data_filter);
         });
     }
 
@@ -114,6 +119,44 @@ export default function ParametrosView() {
         setKiloemtros(kms)
     }
 
+    const eliminarParametro =(__data)=>{
+        
+        Swal.fire({
+            title: 'Estas Seguro?',
+            text: "Este parametro se eliminara de la base de datos!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, Eliminar'
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    setFlagLoading(true)
+                    await deleteDoc(doc(db, "parametros", __data.id));
+
+                    setFlagLoading(false)
+    
+                } catch (error) {
+                    setFlagLoading(false)
+                    Swal.fire(
+                        'no se Elimino!',
+                        'Comprueba la conexion',
+                        'error'
+                      )
+                }   
+    
+              Swal.fire(
+                'Parametro Eliminado!',
+                'Your file has been deleted.',
+                'success'
+              )
+            }
+          })
+      
+        }
+    
+
     // creamos el parametro
     const crearParametro = async()=>{
         
@@ -124,7 +167,8 @@ export default function ParametrosView() {
             start:yearStart,
             end:yearEnd,
             nombre: `${marca} ${yearStart}-${yearEnd}`,
-            mantenimientos:[]
+            mantenimientos:[],
+            user_id:uid,
         }
         console.log(new_param)
         await setDoc(doc(db, "parametros", new_param.id),new_param);
@@ -212,8 +256,9 @@ export default function ParametrosView() {
                                                             <IconButton onClick={()=>{navigate(`${row.id}`)}} color="amarillo" aria-label="eliminar">
                                                                 <AssignmentIcon />
                                                             </IconButton>
-                                                            <IconButton color="rojo" aria-label="eliminar">
-                                                                <EditIcon />
+                                                     
+                                                            <IconButton color="rojo" aria-label="eliminar" onClick={()=>{eliminarParametro(row)}}>
+                                                                <DeleteIcon />
                                                             </IconButton>
 
                                                         </TableCell>

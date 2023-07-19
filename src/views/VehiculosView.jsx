@@ -20,7 +20,6 @@ import {
     ModalBody,
     ModalFooter,
 } from "reactstrap";
-import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -30,11 +29,13 @@ import TablePagination from '@mui/material/TablePagination';
 import IconButton from '@mui/material/IconButton';
 import TableRow from '@mui/material/TableRow';
 import Backdrop from '@mui/material/Backdrop';
+import { useParams } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 let marcas = ['CHEVROLET', 'HYUNDAI', 'TOYOTA', 'KIA', 'NISSAN']
 let años_options = ['2006-2012', '2013-2018', '2019-2023']
 
 export default function VehiculosView() {
+    let { uid } = useParams();
     const [flagLoading,setFlagLoading] = useState(false);
     const [modalInsertar, setModalinsertar] = useState(false);
     const [años, setAños] = useState([]);
@@ -59,7 +60,8 @@ export default function VehiculosView() {
             querySnapshot.forEach((doc) => {
                 params.push(doc.data());
             });
-            setRegistro(params);
+            let data_filter = params.filter(item => item.user_id === uid)
+            setRegistro(data_filter);
         });
 
 
@@ -77,6 +79,7 @@ export default function VehiculosView() {
             kilometraje_inicial:kilometraje,
             placa: placa,
             mantenimientos: [],
+            user_id:uid,
         }
 
         Swal.fire(
