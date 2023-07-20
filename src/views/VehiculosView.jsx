@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import '../css/Analisis.css';
 import { db } from "../firebase/firebase-config";
-import { collection, setDoc, doc, query, onSnapshot,deleteDoc } from "firebase/firestore";
+import { collection, setDoc, doc, query, onSnapshot,deleteDoc,where,getDocs } from "firebase/firestore";
 import Grid from "@mui/material/Grid";
 import Autocomplete from '@mui/material/Autocomplete';
 import Swal from 'sweetalert2';
@@ -70,6 +70,23 @@ export default function VehiculosView() {
     }
 
     const IngresarEquipo = async () => {
+    let name_target = `${marca} ${años}`
+      const q = query(collection(db, "parametros"), where("nombre", "==", name_target));
+      let data = []
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        data = doc.data()
+      });
+      let aux_km = data.kilometros
+      let comentarios_aux = aux_km.map((item) =>{
+        let default_comment = {
+            km:item,
+            text:"ninguno"
+        }
+        return default_comment
+      })
+      comentarios_aux.push({text:"Ninguno",km:0})
+
         let new_carro = {
             marca: marca,
             id: v4(),
@@ -80,6 +97,7 @@ export default function VehiculosView() {
             placa: placa,
             mantenimientos: [],
             user_id:uid,
+            comentario:comentarios_aux
         }
 
         Swal.fire(

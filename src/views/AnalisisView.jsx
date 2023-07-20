@@ -75,12 +75,16 @@ export default function AnalisisView() {
   const [mantenimientos, setMantenimientos] = useState([{ data: [], name: 0 }])
   const [titulo, setTitulos] = useState("Mantenimiento Automotriz")
   const [manProgramados, setManProgramados] = useState([])
+  const [modalComentario,setModalComentario] = useState(false)
+  const [kmComentario,setKmComentario] = useState(0);
+  const [comentario,setComentario] = useState("")
+  const [comentariosVehiculo,setComentariosVehiculo] = useState([{text:"Ninguno",km:0}])
 
 
   const readData = () => {
     onSnapshot(doc(db, "inventario", id), (doc) => {
       setVehiculo(doc.data())
-
+      setComentariosVehiculo(doc.data().comentario)
     })
   }
   const abrirModalMantenimiento = () => {
@@ -222,6 +226,7 @@ export default function AnalisisView() {
         await updateDoc(ref, {
           mantenimientos: manProgramados,
           kilometraje_actual: kms,
+          comentario:comentariosVehiculo,
         });
         Swal.fire(
           'Mantenimiento Agregado!',
@@ -286,6 +291,24 @@ export default function AnalisisView() {
     }
     generarPdf(parametros)
 
+  }
+  const abrirModalComentario =(__data)=>{
+    setModalComentario(true)
+    console.log(__data)
+    setKmComentario(__data.name)
+
+  }
+
+  const agregarComentario =async()=>{
+    let comentarios =  JSON.parse(JSON.stringify(comentariosVehiculo))
+    let newComentario ={
+      km:kmComentario,
+      text:comentario
+    }
+    let comen_filter = comentarios.filter(item => item.km !== kmComentario)
+    comen_filter.push(newComentario)
+    setModalComentario(false)
+    setComentariosVehiculo(comen_filter)
   }
 
   useEffect(() => {
@@ -401,7 +424,24 @@ export default function AnalisisView() {
                       mantenimientos.map((item) => (
                         <Grid item xs={12} >
 
-                          <Chip label={`Mantenimiento a los  ${item.name * 1000}`} sx={{ marginBottom: 1 }} className="rosita" />
+                          <Chip label={`Mantenimiento a los  ${item.name * 1000+ parseInt(vehiculo.kilometraje_inicial) }`} sx={{ marginBottom: 1 }} className="rosita" />
+                          <Button
+                        variant="contained"
+                        sx={{marginLeft:4,marginBottom:1}}
+                        onClick={()=>{abrirModalComentario(item)}}
+                        disabled={flagTipoMan}
+                      >
+                        CREAR COMENTARIO
+                      </Button>
+                      <TextField
+                            id="outlined-multiline-static"
+                            label="Comentario"
+                            multiline
+                            fullWidth
+                            sx={{marginTop:2,marginBottom:2}}
+                            rows={2}
+                            value={comentariosVehiculo.find(element=> element.km === item.name).text}
+                          />
                           <TableContainer sx={{ height: 450 }} component={Paper}>
                             <Table aria-label="customized table">
                               <TableHead>
@@ -424,6 +464,7 @@ export default function AnalisisView() {
                               </TableBody>
                             </Table>
                           </TableContainer>
+                          
                         </Grid>
 
 
@@ -457,6 +498,7 @@ export default function AnalisisView() {
           <Grid item xs={12}>
             <TextField id="outlined-basic" fullWidth label="Kilometraje" value={kms} type="number" variant="outlined" onChange={(event) => setKms(event.target.value)} />
           </Grid>
+         
 
 
         </Grid>
@@ -472,6 +514,43 @@ export default function AnalisisView() {
           <Button
             variant="contained"
             onClick={() => setModalMantenimientos(false)}
+          >
+            cancelar
+          </Button>
+        </Stack>
+      </ModalFooter>
+    </Modal>
+
+    <Modal className="{width:0px}" isOpen={modalComentario}>
+      <ModalHeader>
+        <div><h3>Ingresar Comentario</h3></div>
+      </ModalHeader>
+      <ModalBody>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+            id="outlined-multiline-static"
+            label="Comentario"
+            multiline
+            fullWidth
+            rows={4}
+            defaultValue=""
+            onChange={(event)=>setComentario(event.target.value)}
+          />
+          </Grid>
+        </Grid>
+      </ModalBody>
+      <ModalFooter>
+        <Stack direction="row" spacing={1}>
+          <Button
+            variant="outlined"
+            onClick={() => agregarComentario()}
+          >
+            agregar
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => setModalComentario(false)}
           >
             cancelar
           </Button>

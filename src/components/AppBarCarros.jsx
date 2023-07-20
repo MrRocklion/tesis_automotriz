@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import SettingsIcon from '@mui/icons-material/Settings';
 //iconos
 import DriveEtaIcon from '@mui/icons-material/DriveEta';
@@ -79,6 +80,12 @@ export default  function AppBarCarros(){
                             <DriveEtaIcon fontSize='large' />
                         </ListItemIcon>
                         <ListItemText primary="Vehiculos"/>
+            </ListItemButton>
+            <ListItemButton onClick={()=>{navigate('/')}} >
+                        <ListItemIcon>
+                            <ExitToAppIcon fontSize='large' />
+                        </ListItemIcon>
+                        <ListItemText primary="Salir"/>
             </ListItemButton>
             </List>
             
