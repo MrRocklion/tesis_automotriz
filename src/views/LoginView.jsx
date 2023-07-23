@@ -1,5 +1,3 @@
-
-
 import "../css/LoginView.css"
 import {React,useState,forwardRef} from 'react';
 import Button from '@mui/material/Button';
@@ -17,18 +15,24 @@ import logo from '../assets/logo.jpeg';
 import { useNavigate } from 'react-router-dom'
 import { auth } from "../firebase/firebase-config";
 import { db } from "../firebase/firebase-config";
-import { doc, getDoc } from "firebase/firestore";
-import {signInWithEmailAndPassword } from "firebase/auth";
+import { doc, getDoc,setDoc } from "firebase/firestore";
+import {signInWithEmailAndPassword ,getAuth, createUserWithEmailAndPassword} from "firebase/auth";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-
-
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import Container from '@mui/material/Container';
+import Avatar from '@mui/material/Avatar';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Swal from 'sweetalert2';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 export default function LoginView() {
 
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [validacion,setValidacion] =useState(false);
-
+  const [modalRegister,setModalRegister] = useState(false);
+  const [flagAuth,setFlagAuth] = useState(false);
 
 
   const handleClick = () => {
@@ -43,13 +47,68 @@ export default function LoginView() {
     setOpen(false);
   };
   
+  const handleRegister = (event) => {
+    event.preventDefault();
+    setFlagAuth(true)
+    const data = new FormData(event.currentTarget);
+    console.log({
+      email: data.get("email"),
+      password: data.get("password"),
+      lastName: data.get("lastName"),
+      firstName: data.get("firstName"),
+    });
+    if(data.get("password")=== data.get("confirm_password")){
+
+   
+    createUserWithEmailAndPassword(auth, data.get("email"),data.get("password"),)
+    .then(async(userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      console.log(user)
+      await setDoc(doc(db, "usuarios",user.uid), {
+        nombre: data.get("firstName"),
+        apellido: data.get("lastName"),
+        password: data.get("password"),
+        email:data.get("email"),
+        admin:false,
+        id:user.uid,
+
+      });
+      setFlagAuth(false)
+      Swal.fire(
+        'Registro Correcto!',
+        'Usuario Registrado',
+        'success'
+      )
+      setModalRegister(false)
+     
+      // ...
+    })
+    .catch((error) => {
+      setFlagAuth(false)
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      Swal.fire(
+        errorCode,
+        errorMessage,
+        'error'
+      )
+
+      // ..
+    });
+
+  }else{
+    setOpen(true)
+    setFlagAuth(false)
+  }
+  };
 
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-
+    setFlagAuth(true)
     console.log({
       email: data.get('email'),
       password: data.get('password'),
@@ -77,9 +136,12 @@ export default function LoginView() {
     console.log(errorMessage);
     handleClick();
     setValidacion(true);
+    setFlagAuth(false)
   });
 
   };
+
+  
   // const authWithGoogle = () => {
   //   console.log("aun no esta esta funcionalidad");
   //   // signInWithPopup(auth, provider)
@@ -105,7 +167,7 @@ export default function LoginView() {
   // }
 
   return (
-
+    <>
     <Grid container component="main" sx={{ height: '100vh' }}>
       <CssBaseline />
       <Grid
@@ -132,7 +194,7 @@ export default function LoginView() {
             alignItems: 'center',
           }}
         >
-          <img src={logo} alt="logo de la empresa" width={300} />
+          <img src={logo} alt="logo de la empresa" width={150} />
           <Typography component="h1" variant="h5" sx={{ marginTop: 2 }}>
             Iniciar Sesión
           </Typography>
@@ -177,25 +239,116 @@ export default function LoginView() {
             >
               Ingresar
             </Button>
+            <Button fullWidth variant="contained" onClick={()=>{setModalRegister(true)}}>
+                  ¿No tienes una Cuenta? Regístrate
+                </Button>
      
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
            
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-
-                </Link>
-              </Grid>
-            </Grid>
             <Copyright sx={{ mt: 5 }} />
           </Box>
         </Box>
       </Grid>
     </Grid>
-    
+    <Modal isOpen={modalRegister} >
+                    
+                    <ModalBody>
+                    <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          <Box component="form" noValidate onSubmit={handleRegister} sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  autoComplete="given-name"
+                  name="firstName"
+                  required
+                  fullWidth
+                  id="firstName"
+                  label="Primer Nombre"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Apellido"
+                  name="lastName"
+                  autoComplete="family-name"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Correo Electronico"
+                  name="email"
+                  autoComplete="email"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="confirm_password"
+                  label="Confirmar Password"
+                  type="password"
+                  id="password"
+                  autoComplete="confirm-password"
+                />
+              </Grid>
+   
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              REGISTRAR
+            </Button>
+            <Button variant="contained" color='rojo' fullWidth onClick={() => { setModalRegister(false) }}>
+                            cancelar
+            </Button>
+          </Box>
+        </Box>
+        <Copyright sx={{ mt: 5 }} />
+      </Container>
+      </ModalBody>
+    </Modal>
+    <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={flagAuth}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+   </>
   );
 }
 

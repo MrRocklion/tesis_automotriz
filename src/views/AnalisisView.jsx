@@ -20,6 +20,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { generarPdf } from "../scripts/pdfReporte";
 import { useParams } from "react-router-dom";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 import {
   Modal,
   ModalHeader,
@@ -79,6 +81,7 @@ export default function AnalisisView() {
   const [kmComentario,setKmComentario] = useState(0);
   const [comentario,setComentario] = useState("")
   const [comentariosVehiculo,setComentariosVehiculo] = useState([{text:"Ninguno",km:0}])
+  const [flagLogin,setFlagLogin] = useState(false);
 
 
   const readData = () => {

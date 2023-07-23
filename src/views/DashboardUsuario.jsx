@@ -6,7 +6,9 @@ import ParametrosView from "./ParametrosView";
 import VehiculosView from "./VehiculosView";
 import ConfigParametroView from "./configParametroView";
 import ManipulacionView from "./manipulacionView";
-
+import ParametrosAdmin from "./ParametrosAdmin";
+import VehiclesAdmin from "./VehiclesAdmin";
+import AdminAccounts from "./AdminAccounts";
 export default function DashboardUsuario(){
     return (
         <>
@@ -19,6 +21,9 @@ export default function DashboardUsuario(){
           <Route path="/vehiculos" element={<VehiculosView/>} />
           <Route path="/vehiculos/:id" element={<AnalisisView/>} />
           <Route path="/manipulacion" element={<ManipulacionView/>} /> 
+          <Route path="/parametros_admin" element={<ParametrosAdmin/>} /> 
+          <Route path="/vehicles_admin" element={<VehiclesAdmin/>} /> 
+          <Route path="/user_admin" element={<AdminAccounts/>} /> 
         </Routes>  
            
         </>
