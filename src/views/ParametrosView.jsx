@@ -184,6 +184,9 @@ export default function ParametrosView() {
         <>
             <Container maxWidth="lg" style={{ paddingTop: 20 }}>
                 <Grid container spacing={2}>
+                <Grid item  xs={12} >
+                    <h4>Mis Parametros Creados</h4>
+                </Grid>
                     <Grid item md={4} xs={12} >
                         <Button fullWidth variant="contained" sx={{ height: "100%" }} onClick={abrirModalCrearParametro}>Crear Parametro</Button>
                     </Grid>

@@ -188,9 +188,12 @@ export default function ParametrosAdmin() {
                         Tabla de Administracion de Parametros
                     </h3>
                 </Grid>
-                    <Grid item md={4} xs={12} >
+                    {/* <Grid item md={4} xs={12} >
                         <Button fullWidth variant="contained" sx={{ height: "100%" }} >agregar marca</Button>
                     </Grid>
+                    <Grid item md={4} xs={12} >
+                        <Button fullWidth variant="contained" sx={{ height: "100%" }} >agregar actividad</Button>
+                    </Grid> */}
                 
                     <Grid item xs={12} >
                         <Paper sx={{ width: '100%', overflow: 'hidden' }}>

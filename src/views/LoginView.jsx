@@ -26,6 +26,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Swal from 'sweetalert2';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+
 export default function LoginView() {
 
   const navigate = useNavigate();
@@ -37,6 +38,7 @@ export default function LoginView() {
 
   const handleClick = () => {
     setOpen(true);
+
   };
 
   const handleClose = (event, reason) => {

@@ -22,7 +22,9 @@ export default function DashboardUsuario(){
           <Route path="/vehiculos/:id" element={<AnalisisView/>} />
           <Route path="/manipulacion" element={<ManipulacionView/>} /> 
           <Route path="/parametros_admin" element={<ParametrosAdmin/>} /> 
+          <Route path="/parametros_admin/:id" element={<ConfigParametroView/>} />
           <Route path="/vehicles_admin" element={<VehiclesAdmin/>} /> 
+          <Route path="/vehicles_admin/:id" element={<AnalisisView/>} />
           <Route path="/user_admin" element={<AdminAccounts/>} /> 
         </Routes>  
            

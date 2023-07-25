@@ -39,7 +39,23 @@ const generarPdf = (props_pdf) => {
                 { header: 'Sistema', dataKey: 'sistema' },
                 { header: 'Tipo', dataKey: 'tipo' },
                 { header: 'km * 1000', dataKey: 'km' },
+                { header: 'Realizado', dataKey: 'realizado', },
               ],
+        }) 
+        console.log(props_pdf.comentarios)
+        let aux_comment = props_pdf.comentarios.find(item=> item.km === element.name)
+        console.log(aux_comment)
+        encabezado = [
+            [{ content: 'COMENTARIOS', colSpan: 1, styles: { halign: 'left', minCellWidth: 30, fontStyle: 'bold' } }],
+            [{ content: aux_comment.text, colSpan: 1, styles: { halign: 'left', minCellWidth: 30} }],
+        ]
+        autoTable(doc, {
+            theme: "grid",
+            body: encabezado,
+            styles: {
+                color: 20
+            },
+    
         }) 
     });
   

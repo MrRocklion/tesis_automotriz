@@ -45,6 +45,7 @@ export default function VehiculosView() {
     const [marca, setMarca] = useState("");
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [registro, setRegistro] = useState([]);
+    const [modelo,setModelo]= useState("");
     const navigate = useNavigate();
     const mostrarModalInsertar = () => {
         setModalinsertar(true);
@@ -97,7 +98,8 @@ export default function VehiculosView() {
             placa: placa,
             mantenimientos: [],
             user_id:uid,
-            comentario:comentarios_aux
+            comentario:comentarios_aux,
+            modelo:modelo,
         }
 
         Swal.fire(
@@ -155,7 +157,7 @@ export default function VehiculosView() {
             }   
 
           Swal.fire(
-            'Mantenimiento Eliminado!',
+            'Vehiculo Eliminado!',
             'Your file has been deleted.',
             'success'
           )
@@ -176,6 +178,9 @@ export default function VehiculosView() {
 
         <Container style={{ paddingTop: 10 }}>
             <Grid container spacing={{ xs: 2 }} >
+            <Grid item  xs={12} >
+                    <h4>Mis Vehiculos Creados</h4>
+                </Grid>
                 <Grid item xs={12} md={12}>
 
                     <Button
@@ -209,6 +214,7 @@ export default function VehiculosView() {
                                         >
                                             Año
                                         </TableCell>
+                                  
                                         <TableCell
 
                                             align={"left"}
@@ -216,6 +222,12 @@ export default function VehiculosView() {
                                         >
                                             Placa
                                         </TableCell>
+                                        <TableCell
+                                            align={"left"}
+                                            style={{ minWidth: 100 }}
+                                            >
+                                            Modelo
+                                            </TableCell>
                                         <TableCell
 
                                             align={"left"}
@@ -247,6 +259,9 @@ export default function VehiculosView() {
                                                     </TableCell>
                                                     <TableCell align="left">
                                                         {row.placa}
+                                                    </TableCell>
+                                                    <TableCell align="left">
+                                                        {row.modelo}
                                                     </TableCell>
                                                     <TableCell align="left">
                                                         {row.kilometraje}
@@ -312,6 +327,9 @@ export default function VehiculosView() {
                                     renderInput={(params) => <TextField {...params} fullWidth label="Años" type="text" />}
                                 />
 
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField id="outlined-basic" fullWidth label="modelo" type="text" variant="outlined" onChange={(event) => setModelo(event.target.value)} />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField id="outlined-basic" fullWidth label="Kilometraje" type="number" variant="outlined" onChange={(event) => setKilometraje(event.target.value)} />
