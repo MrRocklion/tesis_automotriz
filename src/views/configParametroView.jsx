@@ -21,7 +21,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { styled } from '@mui/material/styles';
-import { doc, onSnapshot ,updateDoc} from "firebase/firestore";
+import { doc, onSnapshot ,updateDoc,collection, query} from "firebase/firestore";
 import Typography from '@mui/material/Typography';
 import { v4 as uuidv4 } from 'uuid';
 import { db } from "../firebase/firebase-config";
@@ -61,6 +61,8 @@ export default function ConfigParametroView() {
     const [modalEditar,setModalEditar] = useState(false);
     const [currentActividad,setCurrentActividad] =useState({}) 
     const [parametro, setParametro] = useState({});
+    const [actividades,setActividades] = useState([data_json.actividades[0]])
+    
     const readData = () => {
         onSnapshot(doc(db, "parametros", id), (doc) => {
             setMantenimientos(doc.data().mantenimientos)
@@ -68,6 +70,15 @@ export default function ConfigParametroView() {
             setKiloemtros(doc.data().kilometros)
             setKmTarget(doc.data().kilometros[0])
         })
+        const q = query(collection(db, "actividades"));
+        onSnapshot(q, (querySnapshot) => {
+        const params = [];
+        querySnapshot.forEach((doc) => {
+            params.push(doc.data());
+        });
+    
+        setActividades(params);
+        });
     }
 
 
@@ -184,7 +195,7 @@ export default function ConfigParametroView() {
                     </Typography>
                     </Grid>
                     <Grid item md={4} xs={12} >
-                        <Button fullWidth variant="contained" sx={{ height: "100%" }} onClick={()=>{abrirModalActividades()}} >Agregar MTTO</Button>
+                        <Button fullWidth variant="contained" color="verde2" sx={{ height: "100%" }} onClick={()=>{abrirModalActividades()}} >Agregar MTTO</Button>
                     </Grid>
 
 
@@ -337,7 +348,7 @@ export default function ConfigParametroView() {
                                     getOptionLabel={(option) => option.nombre}
                                     id="controllable-states-demo"
                                     fullWidth
-                                    options={data_json.actividades}
+                                    options={actividades}
                                     renderInput={(params) => <TextField {...params} label="Actividad" />}
                                 />
                         </Grid>

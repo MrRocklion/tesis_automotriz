@@ -16,10 +16,10 @@ import { useNavigate } from 'react-router-dom'
 import { auth } from "../firebase/firebase-config";
 import { db } from "../firebase/firebase-config";
 import { doc, getDoc,setDoc } from "firebase/firestore";
-import {signInWithEmailAndPassword ,getAuth, createUserWithEmailAndPassword} from "firebase/auth";
+import {signInWithEmailAndPassword , createUserWithEmailAndPassword} from "firebase/auth";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Modal, ModalBody } from 'reactstrap';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -359,7 +359,7 @@ function Copyright(props) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        P&M Automotive v1.0.0
+        P&M Automotive v1.0.1
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}

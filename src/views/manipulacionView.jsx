@@ -4,6 +4,7 @@ import {  doc, getDoc,setDoc } from "firebase/firestore";
 import Container from '@mui/material/Container';
 import { db } from "../firebase/firebase-config";
 import { v4 as uuidv4 } from 'uuid';
+import data_json from "../scripts/params.json";
 export default function ManipulacionView() {
     const mans_modificados = useRef([])
 
@@ -42,17 +43,48 @@ export default function ManipulacionView() {
 
     const crearParametro = async()=>{
         
-        let new_param = {
-            id: uuidv4(),
-            kilometros:[5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100],
-            marca:"TOYOTA",
-            start:"2006",
-            end:"2012",
-            nombre: "TOYOTA 2006-2012",
-            mantenimientos:mans_modificados.current
-        }
-        console.log(new_param)
-        await setDoc(doc(db, "parametros", new_param.id),new_param);
+        // let new_param = {
+        //     id: uuidv4(),
+        //     kilometros:[5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100],
+        //     marca:"TOYOTA",
+        //     start:"2006",
+        //     end:"2012",
+        //     nombre: "TOYOTA 2006-2012",
+        //     mantenimientos:mans_modificados.current
+        // }
+        // console.log(new_param)
+        // await setDoc(doc(db, "actividades", new_param.id),new_param);
+    //    let aux_datos = [
+    //     {
+    //         nombre:"TOYOTA",
+    //         codigo: 1,
+    //         id:uuidv4()
+    //     },
+    //     {
+    //         nombre:"HYUNDAI",
+    //         codigo: 2,
+    //         id:uuidv4()
+    //     },
+    //     {
+    //         nombre:"CHEVROLET",
+    //         codigo: 3,
+    //         id:uuidv4()
+    //     },
+    //     {
+    //         nombre:"KIA",
+    //         codigo: 4,
+    //         id:uuidv4()
+    //     },
+    //     {
+    //         nombre:"NISSAN",
+    //         codigo: 5,
+    //         id:uuidv4()
+    //     }
+    //    ]
+      
+    //    aux_datos.forEach(async(item)=>{
+    //     await setDoc(doc(db, "marcas", item.id),item);
+    //    })
        
     }
 

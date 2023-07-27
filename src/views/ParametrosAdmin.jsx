@@ -28,6 +28,8 @@ import { useNavigate } from 'react-router-dom';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useParams } from 'react-router-dom';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 export default function ParametrosAdmin() {
     let { uid } = useParams();
     const navigate = useNavigate();
@@ -43,6 +45,7 @@ export default function ParametrosAdmin() {
     const [km,setKm] = useState([]);
     const [modalConfiguracion,setModalConfiguracion] = useState(false);
     const [flagLoading,setFlagLoading] = useState(false);
+
     
 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -76,6 +79,8 @@ export default function ParametrosAdmin() {
     
         setParametros(params);
         });
+
+       
     }
 
 
@@ -104,14 +109,7 @@ export default function ParametrosAdmin() {
         return unicos
     }
    
-    
-    const abrirModalCrearParametro = ()=>{
-        setKiloemtros([])
-        setYearStart("")
-        setYearEnd("")
-        setKm(0)
-        setModalParametro(true)
-    }
+
     const quitarKm =(index)=>{
         let kms = JSON.parse(JSON.stringify(kilometros))
         kms.splice(index,1)
@@ -188,16 +186,13 @@ export default function ParametrosAdmin() {
                         Tabla de Administracion de Parametros
                     </h3>
                 </Grid>
-                    {/* <Grid item md={4} xs={12} >
-                        <Button fullWidth variant="contained" sx={{ height: "100%" }} >agregar marca</Button>
-                    </Grid>
                     <Grid item md={4} xs={12} >
-                        <Button fullWidth variant="contained" sx={{ height: "100%" }} >agregar actividad</Button>
-                    </Grid> */}
+                        <Button fullWidth color="warning" variant="contained" sx={{ height: "100%" }} onClick={()=>{navigate("actividades")}} >agregar actividad</Button>
+                    </Grid>
                 
                     <Grid item xs={12} >
                         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                            <TableContainer sx={{ maxHeight: 610 }}>
+                            <TableContainer sx={{ maxHeight: 450 }}>
                                 <Table stickyHeader aria-label="sticky table">
                                     <TableHead>
                                         <TableRow>
@@ -421,6 +416,12 @@ export default function ParametrosAdmin() {
                     </ModalFooter>
                 </Modal>
             </Container>
+                    <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={flagLoading}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </>
     )
 

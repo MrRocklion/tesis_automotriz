@@ -8,7 +8,7 @@ import { collection, setDoc, doc, query, onSnapshot,deleteDoc,where,getDocs } fr
 import Grid from "@mui/material/Grid";
 import Autocomplete from '@mui/material/Autocomplete';
 import Swal from 'sweetalert2';
-import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+
 import DescriptionIcon from '@mui/icons-material/Description';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -46,9 +46,7 @@ export default function VehiclesAdmin() {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [registro, setRegistro] = useState([]);
     const navigate = useNavigate();
-    const mostrarModalInsertar = () => {
-        setModalinsertar(true);
-    };
+
     const cerrarModalInsertar = () => {
         setModalinsertar(false);
     };

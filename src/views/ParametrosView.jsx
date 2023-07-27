@@ -24,11 +24,12 @@ import { doc, setDoc ,collection, query, onSnapshot,deleteDoc} from "firebase/fi
 import Swal from 'sweetalert2';
 import { v4 as uuidv4 } from 'uuid';
 import { db } from "../firebase/firebase-config";
-import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useParams } from 'react-router-dom';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 export default function ParametrosView() {
     let { uid } = useParams();
     const navigate = useNavigate();
@@ -188,7 +189,7 @@ export default function ParametrosView() {
                     <h4>Mis Parametros Creados</h4>
                 </Grid>
                     <Grid item md={4} xs={12} >
-                        <Button fullWidth variant="contained" sx={{ height: "100%" }} onClick={abrirModalCrearParametro}>Crear Parametro</Button>
+                        <Button fullWidth  color="warning" variant="contained" sx={{ height: "100%" }} onClick={abrirModalCrearParametro}>Crear Parametro</Button>
                     </Grid>
          
                 
@@ -342,7 +343,7 @@ export default function ParametrosView() {
 									<TableRow>
 						
 										<StyledTableCell align="left">#</StyledTableCell>
-										<StyledTableCell align="left">Kilometro</StyledTableCell>
+										<StyledTableCell align="left">Kilometro * 1000</StyledTableCell>
 										<StyledTableCell align="left">Acciones</StyledTableCell>
 									</TableRow>
 									</TableHead>
@@ -418,6 +419,12 @@ export default function ParametrosView() {
                     </ModalFooter>
                 </Modal>
             </Container>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={flagLoading}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </>
     )
 

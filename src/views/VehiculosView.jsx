@@ -31,7 +31,7 @@ import TableRow from '@mui/material/TableRow';
 import Backdrop from '@mui/material/Backdrop';
 import { useParams } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
-let marcas = ['CHEVROLET', 'HYUNDAI', 'TOYOTA', 'KIA', 'NISSAN']
+let marcas = ['CHEVROLET', 'HYUNDAY', 'TOYOTA', 'KIA', 'NISSAN']
 let años_options = ['2006-2012', '2013-2018', '2019-2023']
 
 export default function VehiculosView() {
@@ -171,6 +171,7 @@ export default function VehiculosView() {
    
     useEffect(() => {
         getData();
+                // eslint-disable-next-line
     }, [])
 
 
@@ -329,7 +330,7 @@ export default function VehiculosView() {
 
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField id="outlined-basic" fullWidth label="modelo" type="text" variant="outlined" onChange={(event) => setModelo(event.target.value)} />
+                                <TextField id="outlined-basic" fullWidth label="Modelo" type="text" variant="outlined" onChange={(event) => setModelo(event.target.value)} />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField id="outlined-basic" fullWidth label="Kilometraje" type="number" variant="outlined" onChange={(event) => setKilometraje(event.target.value)} />
