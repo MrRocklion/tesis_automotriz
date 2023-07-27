@@ -304,8 +304,17 @@ export default function AnalisisView() {
     }
     const crearPdf = () => {
         const hoy = new Date()
+        let aux_dato = JSON.parse(JSON.stringify(mantenimientos))
+        aux_dato.forEach(item=>{
+
+            item.data.forEach(element=>{
+                element.km = element.km * 1000 + parseInt(vehiculo.kilometraje_inicial)
+            })
+        })
+ 
+
         let parametros = {
-            data: mantenimientos,
+            data: aux_dato,
             comentarios:comentariosVehiculo,
             fecha: hoy.toLocaleDateString()
         }
