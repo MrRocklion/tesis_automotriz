@@ -31,7 +31,7 @@ import TableRow from '@mui/material/TableRow';
 import Backdrop from '@mui/material/Backdrop';
 import { useParams } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
-let marcas = ['CHEVROLET', 'HYUNDAY', 'TOYOTA', 'KIA', 'NISSAN']
+let marcas = ['CHEVROLET', 'HYUNDAI', 'TOYOTA', 'KIA', 'NISSAN']
 let años_options = ['2006-2012', '2013-2018', '2019-2023']
 
 export default function VehiculosView() {
